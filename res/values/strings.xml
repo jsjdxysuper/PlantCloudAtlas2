@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">水新云图</string>
+    <string name="title_activity_main">水新云图</string>
+    <string name="title_activity_fgs">title_activity_fgs</string>
+    <string name="title_activity_dc">title_activity_dc</string>
+    <string name="title_activity_jz">title_activity_jz</string>
+    <string name="title_activity_title">水新云图</string>
+    <string name="title_activity_login">水新云图</string>
+    <string name="title_activity_loading">水新云图</string>
+    <string name="title_activity_welcome">水新云图</string>
+    <string name="title_activity_setting">水新云图</string>
+    <string name="title_activity_userinfo">水新云图</string>
+    <string name="title_activity_changepw">水新云图</string>
+    <string name="title_activity_about">水新云图</string>
+    <string name="title_activity_help">MainActivity</string>
+    <string name="hello_world">Hello world!</string>
+
+    <string name="main_activity_page1_title">预测</string>
+    <string name="main_activity_page2_title">发限电</string>
+    <string name="main_activity_page3_title">消纳</string>
+    <string name="page1_url">http://47.94.218.215:6069/NewEnergyApp/test_init.so</string>
+    <string name="page2_url">http://47.94.218.215:6069/NewEnergyApp/test_init.so</string>
+    <string name="page3_url">http://47.94.218.215:6069</string>
+
+</resources>

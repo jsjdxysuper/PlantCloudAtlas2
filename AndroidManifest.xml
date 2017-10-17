@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.pm.plantcloudatlas"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="17" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/mytitle" >
+        <activity
+            android:name="com.pm.plantcloudatlas.MainActivity"
+            android:label="@string/title_activity_main" >
+        </activity>
+        <activity
+            android:name="com.pm.plantcloudatlas.FgsActivity"
+            android:label="@string/title_activity_fgs" >
+        </activity>
+        <activity
+            android:name="com.pm.plantcloudatlas.DcActivity"
+            android:label="@string/title_activity_dc" >
+        </activity>
+        <activity
+            android:name="com.pm.plantcloudatlas.JzActivity"
+            android:label="@string/title_activity_jz" >
+        </activity>
+        <activity
+            android:name="com.pm.plantcloudatlas.LoginActivity"
+            android:label="@string/title_activity_login" >
+        </activity>
+        <activity
+            android:name="com.pm.plantcloudatlas.LoadingActivity"
+            android:label="@string/title_activity_loading" >
+        </activity>
+        <activity
+            android:name="com.pm.plantcloudatlas.WelcomeActivity"
+            android:label="@string/title_activity_welcome"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.pm.plantcloudatlas.SettingActivity"
+            android:label="@string/title_activity_setting" >
+        </activity>
+        <activity
+            android:name="com.pm.plantcloudatlas.UserinfoActivity"
+            android:label="@string/title_activity_userinfo" >
+        </activity>
+        <activity
+            android:name="com.pm.plantcloudatlas.ChangepwActivity"
+            android:label="@string/title_activity_changepw" >
+        </activity>
+        <activity
+            android:name="com.pm.plantcloudatlas.AboutActivity"
+            android:label="@string/title_activity_about" >
+        </activity>
+
+        <service
+            android:name="com.pm.plantcloudatlas.NetworkStateService"
+            android:enabled="true" />
+
+        <activity
+            android:name="com.pm.plantcloudatlas.HelpActivity"
+            android:label="@string/title_activity_help" >
+        </activity>
+    </application>
+
+</manifest>
