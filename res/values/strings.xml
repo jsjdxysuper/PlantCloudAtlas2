@@ -17,11 +17,12 @@
     <string name="title_activity_help">MainActivity</string>
     <string name="hello_world">Hello world!</string>
 
-    <string name="main_activity_page1_title">预测</string>
-    <string name="main_activity_page2_title">发限电</string>
-    <string name="main_activity_page3_title">消纳</string>
-    <string name="page1_url">http://47.94.218.215:6069/NewEnergyApp/test_init.so</string>
-    <string name="page2_url">http://47.94.218.215:6069/NewEnergyApp/test_init.so</string>
-    <string name="page3_url">http://47.94.218.215:6069</string>
-
+    <string name="main_activity_page1_title">风电</string>
+    <string name="main_activity_page2_title">光伏</string>
+    <string name="main_activity_page3_title">日报</string>
+    <string name="login_url">http://47.94.218.215:6069/NewEnergyApp/login_loginCheck.so</string>
+    <string name="page1_url">http://47.94.218.215:6069/NewEnergyApp/page1_init.so</string>
+    <string name="page2_url">http://47.94.218.215:6069/NewEnergyApp/page2_init.so</string>
+    <string name="page3_url">http://47.94.218.215:6069/NewEnergyApp/page3_init.so</string>
+    <string name="change_pwd_url">http://47.94.218.215:6069/NewEnergyApp/login_changePwd.so</string>
 </resources>

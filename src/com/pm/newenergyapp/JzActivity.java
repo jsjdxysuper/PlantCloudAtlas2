@@ -1,6 +1,7 @@
-package com.pm.plantcloudatlas;
+package com.pm.newenergyapp;
 
 import java.util.Timer;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,21 +13,21 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public class FgsActivity extends Activity {
-	
+public class JzActivity extends Activity {
+
 	static ProgressWebView wv;
 	static String url;
 	private long timeout = 10000;
     private Handler mHandler = new Handler();
     private Timer timer;
-    
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.fgs);
-		
+		setContentView(R.layout.jz);
+
 		wv = (ProgressWebView) findViewById(R.id.webView1);
-		
+
 		//自动适应屏幕
 		wv.getSettings().setUseWideViewPort(true);
 		wv.getSettings().setLoadWithOverviewMode(true);
@@ -36,9 +37,10 @@ public class FgsActivity extends Activity {
 		
 		//不使用缓存
 		wv.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+
 		//得到焦点
 		wv.requestFocus();
-		
+
 		
 		
 		wv.setWebViewClient(new WebViewClient() {
@@ -55,15 +57,16 @@ public class FgsActivity extends Activity {
 			@Override
 			public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 				super.onReceivedError(view, errorCode, description, failingUrl); 
-				FgsActivity.loadoptionurl("file:///android_asset/nonet.html");
+				JzActivity.loadoptionurl("file:///android_asset/nonet.html");
 			}
 		});
 	}
 
+	
 	public static void loadoptionurl(String optionurl) {
 		wv.loadUrl(optionurl);
 	}
-	
+
 	public static void loadurl() {
 		wv.loadUrl(url);
 	}
@@ -83,7 +86,7 @@ public class FgsActivity extends Activity {
 	public static void setUrl(String inputurl) {
 		url = inputurl; 
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK ) {

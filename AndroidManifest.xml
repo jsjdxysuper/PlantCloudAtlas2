@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.pm.plantcloudatlas"
+    package="com.pm.newenergyapp"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -17,31 +17,31 @@
         android:label="@string/app_name"
         android:theme="@style/mytitle" >
         <activity
-            android:name="com.pm.plantcloudatlas.MainActivity"
+            android:name="com.pm.newenergyapp.MainActivity"
             android:label="@string/title_activity_main" >
         </activity>
         <activity
-            android:name="com.pm.plantcloudatlas.FgsActivity"
+            android:name="com.pm.newenergyapp.FgsActivity"
             android:label="@string/title_activity_fgs" >
         </activity>
         <activity
-            android:name="com.pm.plantcloudatlas.DcActivity"
+            android:name="com.pm.newenergyapp.DcActivity"
             android:label="@string/title_activity_dc" >
         </activity>
         <activity
-            android:name="com.pm.plantcloudatlas.JzActivity"
+            android:name="com.pm.newenergyapp.JzActivity"
             android:label="@string/title_activity_jz" >
         </activity>
         <activity
-            android:name="com.pm.plantcloudatlas.LoginActivity"
+            android:name="com.pm.newenergyapp.LoginActivity"
             android:label="@string/title_activity_login" >
         </activity>
         <activity
-            android:name="com.pm.plantcloudatlas.LoadingActivity"
+            android:name="com.pm.newenergyapp.LoadingActivity"
             android:label="@string/title_activity_loading" >
         </activity>
         <activity
-            android:name="com.pm.plantcloudatlas.WelcomeActivity"
+            android:name="com.pm.newenergyapp.WelcomeActivity"
             android:label="@string/title_activity_welcome"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
@@ -51,28 +51,28 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.pm.plantcloudatlas.SettingActivity"
+            android:name="com.pm.newenergyapp.SettingActivity"
             android:label="@string/title_activity_setting" >
         </activity>
         <activity
-            android:name="com.pm.plantcloudatlas.UserinfoActivity"
+            android:name="com.pm.newenergyapp.UserinfoActivity"
             android:label="@string/title_activity_userinfo" >
         </activity>
         <activity
-            android:name="com.pm.plantcloudatlas.ChangepwActivity"
+            android:name="com.pm.newenergyapp.ChangepwActivity"
             android:label="@string/title_activity_changepw" >
         </activity>
         <activity
-            android:name="com.pm.plantcloudatlas.AboutActivity"
+            android:name="com.pm.newenergyapp.AboutActivity"
             android:label="@string/title_activity_about" >
         </activity>
 
         <service
-            android:name="com.pm.plantcloudatlas.NetworkStateService"
+            android:name="com.pm.newenergyapp.NetworkStateService"
             android:enabled="true" />
 
         <activity
-            android:name="com.pm.plantcloudatlas.HelpActivity"
+            android:name="com.pm.newenergyapp.HelpActivity"
             android:label="@string/title_activity_help" >
         </activity>
     </application>

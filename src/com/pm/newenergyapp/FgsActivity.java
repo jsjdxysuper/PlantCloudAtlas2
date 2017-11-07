@@ -1,43 +1,32 @@
-package com.pm.plantcloudatlas;
+package com.pm.newenergyapp;
 
 import java.util.Timer;
-import java.util.TimerTask;
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
-import android.graphics.Bitmap;
 
-
-
-public class DcActivity extends Activity {
-
+public class FgsActivity extends Activity {
+	
 	static ProgressWebView wv;
 	static String url;
 	private long timeout = 10000;
-	private Handler mHandler = new Handler();
-	private Timer timer;
-
-
+    private Handler mHandler = new Handler();
+    private Timer timer;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.dc);
-
+		setContentView(R.layout.fgs);
+		
 		wv = (ProgressWebView) findViewById(R.id.webView1);
-
+		
 		//自动适应屏幕
 		wv.getSettings().setUseWideViewPort(true);
 		wv.getSettings().setLoadWithOverviewMode(true);
@@ -47,13 +36,11 @@ public class DcActivity extends Activity {
 		
 		//不使用缓存
 		wv.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-
 		//得到焦点
 		wv.requestFocus();
-
-
-
-
+		
+		
+		
 		wv.setWebViewClient(new WebViewClient() {
 			@Override
 			public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -68,7 +55,7 @@ public class DcActivity extends Activity {
 			@Override
 			public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 				super.onReceivedError(view, errorCode, description, failingUrl); 
-				DcActivity.loadoptionurl("file:///android_asset/nonet.html");
+				FgsActivity.loadoptionurl("file:///android_asset/nonet.html");
 			}
 		});
 	}
@@ -76,23 +63,27 @@ public class DcActivity extends Activity {
 	public static void loadoptionurl(String optionurl) {
 		wv.loadUrl(optionurl);
 	}
-
+	
 	public static void loadurl() {
 		wv.loadUrl(url);
 	}
-
+	
 	public static void stoploadurl() {
 		wv.stopLoading();
 	}
-
+	
 	public static void goback() {
 		wv.goBack();
 	}
-
+	
+	public static int getprogress() {
+		return wv.getProgress();
+	}
+	
 	public static void setUrl(String inputurl) {
 		url = inputurl; 
 	}
-
+	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK ) {

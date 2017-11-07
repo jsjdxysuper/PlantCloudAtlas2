@@ -1,9 +1,12 @@
-package com.pm.plantcloudatlas;
+package com.pm.newenergyapp;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import android.app.AlertDialog;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.app.Activity;
@@ -12,10 +15,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.provider.Settings;
+import android.speech.tts.UtteranceProgressListener;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -45,14 +52,20 @@ public class MainActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+
 		setContentView(R.layout.activity_main);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title);
 		instance = this;
 		context = MainActivity.this;
 		manager = new LocalActivityManager(this , true);
 		manager.dispatchCreate(savedInstanceState);
-
+		String brand = Utility.getDeviceBrand();
+		String androidId = Utility.getAndroidId(context);
+		//String imbi = Utility.getIMEI(context);
+		String serialNO = Utility.getSerialNO();
+		String sysVersion = Utility.getSystemVersion();
 		
 		//监控网络状态服务启动
 //		Intent i = new Intent(context, NetworkStateService.class);
@@ -144,6 +157,7 @@ public class MainActivity extends Activity {
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		int screenW = dm.widthPixels;// 获取分辨率宽度
 		offset = (screenW / 3 - bmpW) / 2;// 计算偏移量
+//		offset = (screenW / 2 - bmpW) / 2;// 计算偏移量
 		Matrix matrix = new Matrix();
 		matrix.postTranslate(offset, 0);
 		cursor.setImageMatrix(matrix);// 设置动画初始位置

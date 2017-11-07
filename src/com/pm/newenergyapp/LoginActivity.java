@@ -1,52 +1,44 @@
-package com.pm.plantcloudatlas;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
+package com.pm.newenergyapp;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-import org.ksoap2.SoapEnvelope;
-import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpTransportSE;
-import org.xmlpull.v1.XmlPullParserException;
+import org.json.JSONObject;
+import org.kobjects.util.Util;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoginActivity extends Activity {
 
 	private EditText mUser; // 帐号编辑框
 	private EditText mPassword; // 密码编辑框
 	private String loginServletURL = "";
+
+    private String hardwareId;
 	private int loginCheckResult = 0;
 	private CheckBox rem_pw;
 	private CheckBox auto_login;
@@ -68,7 +60,7 @@ public class LoginActivity extends Activity {
 		DC_URL = getApplication().getString(R.string.page2_url)+"?yhid=";
 		JZ_URL = getApplication().getString(R.string.page3_url)+"?yhid=";
 
-
+		hardwareId = Utility.getUnicId(this);
 		//获得实例对象
 		sp = this.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
 		mUser = (EditText)findViewById(R.id.login_user_edit);
@@ -129,13 +121,12 @@ public class LoginActivity extends Activity {
 			}
 		});
 	}
-
 	public void login_mainweixin(View v) {
 		if (isConnectInternet() == true) {
 			if ("".equals(mUser.getText().toString()) || "".equals(mPassword.getText().toString())) {
 				Dialog.showDialog("登录错误", "用户或者密码不能为空，\n请输入后再登录！", LoginActivity.this);
 			} else {
-				int loginState = checkLogin(mUser.getText().toString(), mPassword.getText().toString());
+				int loginState = checkLogin();
 
 				if (loginState == 1) {
 					if (rem_pw.isChecked()) {
@@ -163,7 +154,7 @@ public class LoginActivity extends Activity {
 					startActivity(intent);
 					this.finish();
 				} else if (loginState == 2) {
-					Dialog.showDialog("登录失败", "用户或者密码不正确，\n请检查后重新输入！", LoginActivity.this);
+					Dialog.showDialog("登录失败", "用户或者密码不正确或者设备未注册，\n请检查后重新输入！", LoginActivity.this);
 				} else if (loginState == 3) {
 					Dialog.showDialog("系统提示", "数据连接失败，\n请检查网络状态！", LoginActivity.this);
 				} else if (loginState == 4) {
@@ -187,29 +178,43 @@ public class LoginActivity extends Activity {
 		return netSataus;
 	}
 
-
-	public int checkLogin(String userid, String password) {
+	public int checkLogin() {
 		loginCheckResult = 0;
-		loginServletURL ="http://192.168.1.105:8080/PlantCloudAtlasAppWebpub/LoginServlet";   
-		loginServletURL += "?userid=" + userid + "&password=" + password;
+		loginServletURL = getApplication().getString(R.string.login_url);
+		//loginServletURL += "?userId=" + userid + "&pwd=" + password+"&hardwareId="+hardwareId;
+		// 设置HTTP POST请求参数必须用NameValuePair对象
 
 		new Thread() {
 			public void run() {
 				try {
 					//调用servlet的doget方法
-					HttpGet request = new HttpGet(loginServletURL);
+					HttpPost httpPost = new HttpPost(loginServletURL);
+					String userid = mUser.getText().toString();
+					String password = mPassword.getText().toString();
+					// 设置httpPost请求参数
+					List<NameValuePair> params = new ArrayList<NameValuePair>();
+					params.add(new BasicNameValuePair("userId",userid));
+					params.add(new BasicNameValuePair("pwd", password));
 
+					params.add(new BasicNameValuePair("hardwareId",hardwareId));
+
+					httpPost.setEntity(new UrlEncodedFormEntity( params , HTTP.UTF_8 ));
 					//在这里执行请求,访问url，并获取响应
-					HttpResponse response = new DefaultHttpClient().execute(request);
-
+					HttpClient httpClient = new DefaultHttpClient() ;
+					// 请求超时  10s
+					httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 15000 ) ;
+					// 读取超时  10s
+					httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 15000 );
+					HttpResponse response = httpClient.execute( httpPost ) ;
 					//获取返回码,等于200即表示连接成功,并获得响应
 					if(response.getStatusLine().getStatusCode() == 200) {
 						//获取响应中的数据
 						String result= EntityUtils.toString(response.getEntity());
-
-						if (Integer.parseInt(result) == 1) {
+						JSONObject jo = new JSONObject(result);
+						if (Integer.parseInt(jo.get("code").toString()) == 0||Integer.parseInt(jo.get("code").toString()) == 4) {
 							loginCheckResult = 1;
-						} else if (Integer.parseInt(result) == 0) {
+						} else if (Integer.parseInt(jo.get("code").toString()) == 1||Integer.parseInt(jo.get("code").toString()) == 2||
+									Integer.parseInt(jo.get("code").toString()) == 3) {
 							loginCheckResult = 2;
 						}
 					}else {
@@ -221,23 +226,22 @@ public class LoginActivity extends Activity {
 			}
 		}.start();
 
-//		int s = 0;
-//		while (true) {
-//			if (s >= 20) {
-//				loginCheckResult = 5;
-//				break;
-//			}
-//			if (loginCheckResult != 0)
-//				break;
-//			try {
-//				Thread.sleep(1000);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			s ++;
-//		}
-//		return loginCheckResult;
-		return 1;
+		int s = 0;
+		while (true) {
+			if (s >= 20) {
+				loginCheckResult = 5;
+				break;
+			}
+			if (loginCheckResult != 0)
+				break;
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			s ++;
+		}
+		return loginCheckResult;
+
 	}
 }

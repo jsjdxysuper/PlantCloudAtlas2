@@ -1,4 +1,4 @@
-package com.pm.plantcloudatlas;
+package com.pm.newenergyapp;
 
 import android.app.Activity;
 import android.app.AlertDialog;

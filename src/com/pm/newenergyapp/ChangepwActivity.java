@@ -1,9 +1,17 @@
-package com.pm.plantcloudatlas;
+package com.pm.newenergyapp;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,12 +21,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
-import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChangepwActivity extends Activity {
 	private static String userid = "";
@@ -48,7 +56,7 @@ public class ChangepwActivity extends Activity {
 		} else if (et_xmm.getText().toString().equals(et_xmmqr.getText().toString()) == false){
 			Dialog.showDialog("错误", "两次填写的密码不一致，\n请正确输入！", ChangepwActivity.this);
 		} else {
-			int loginState = checkLogin(et_ymm.getText().toString(), et_xmm.getText().toString());
+			int loginState = checkLogin();
 			
 			if (loginState == 1) {
 				AlertDialog isExit = new AlertDialog.Builder(this).create();
@@ -70,28 +78,44 @@ public class ChangepwActivity extends Activity {
 	}
 	
 
-	public int checkLogin(String ymm, String xmm) {
+	public int checkLogin() {
 		loginCheckResult = 0;
-		loginServletURL ="http://192.168.1.105:8080/PlantCloudAtlasAppWebpub/ChangepwServlet";   
-		loginServletURL +="?yhid=" + userid + "&ymm=" + ymm + "&xmm=" + xmm;
+		loginServletURL =getApplication().getString(R.string.change_pwd_url);
 
 		new Thread() {
 			public void run() {
 				try {
 					//调用servlet的doget方法
-					HttpGet request = new HttpGet(loginServletURL);
+					HttpPost httpPost = new HttpPost(loginServletURL);
+//					String userid = mUser.getText().toString();
+//					String password = mPassword.getText().toString();
+					// 设置httpPost请求参数
+					List<NameValuePair> params = new ArrayList<NameValuePair>();
+					params.add(new BasicNameValuePair("userId",userid));
+					String ymm = et_ymm.getText().toString();
+					String xmm = et_xmm.getText().toString();
+					params.add(new BasicNameValuePair("origin_pwd", ymm));
+					params.add(new BasicNameValuePair("pwd",xmm));
 
+					httpPost.setEntity(new UrlEncodedFormEntity( params , HTTP.UTF_8 ));
 					//在这里执行请求,访问url，并获取响应
-					HttpResponse response = new DefaultHttpClient().execute(request); 
+					HttpClient httpClient = new DefaultHttpClient() ;
+					// 请求超时  10s
+					httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 15000 ) ;
+					// 读取超时  10s
+					httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 15000 );
+					HttpResponse response = httpClient.execute( httpPost );
 
 					//获取返回码,等于200即表示连接成功,并获得响应
 					if(response.getStatusLine().getStatusCode() == 200) {
 						//获取响应中的数据
 						String result= EntityUtils.toString(response.getEntity());
+                        JSONObject jo = new JSONObject(result);
 
-						if (Integer.parseInt(result) == 1) {
+						if (Integer.parseInt(jo.get("code").toString()) == 0) {
 							loginCheckResult = 1;
-						} else if (Integer.parseInt(result) == 0) {
+						} else if (Integer.parseInt(jo.get("code").toString()) == 1||
+                                Integer.parseInt(jo.get("code").toString()) == 2) {
 							loginCheckResult = 2;
 						}
 					}else {

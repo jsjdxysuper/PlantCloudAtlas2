@@ -1,7 +1,6 @@
-package com.pm.plantcloudatlas;
+package com.pm.newenergyapp;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,12 +8,9 @@ import android.content.SharedPreferences.Editor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.view.View.OnClickListener;
 
 public class SettingActivity extends Activity {

@@ -1,36 +1,33 @@
-package com.pm.plantcloudatlas;
+package com.pm.newenergyapp;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
+import android.graphics.Bitmap;
 
-public class JzActivity extends Activity {
+
+
+public class DcActivity extends Activity {
 
 	static ProgressWebView wv;
 	static String url;
 	private long timeout = 10000;
-    private Handler mHandler = new Handler();
-    private Timer timer;
+	private Handler mHandler = new Handler();
+	private Timer timer;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.jz);
+		setContentView(R.layout.dc);
 
 		wv = (ProgressWebView) findViewById(R.id.webView1);
 
@@ -47,8 +44,9 @@ public class JzActivity extends Activity {
 		//得到焦点
 		wv.requestFocus();
 
-		
-		
+
+
+
 		wv.setWebViewClient(new WebViewClient() {
 			@Override
 			public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -63,12 +61,11 @@ public class JzActivity extends Activity {
 			@Override
 			public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 				super.onReceivedError(view, errorCode, description, failingUrl); 
-				JzActivity.loadoptionurl("file:///android_asset/nonet.html");
+				DcActivity.loadoptionurl("file:///android_asset/nonet.html");
 			}
 		});
 	}
 
-	
 	public static void loadoptionurl(String optionurl) {
 		wv.loadUrl(optionurl);
 	}
@@ -76,19 +73,15 @@ public class JzActivity extends Activity {
 	public static void loadurl() {
 		wv.loadUrl(url);
 	}
-	
+
 	public static void stoploadurl() {
 		wv.stopLoading();
 	}
-	
+
 	public static void goback() {
 		wv.goBack();
 	}
-	
-	public static int getprogress() {
-		return wv.getProgress();
-	}
-	
+
 	public static void setUrl(String inputurl) {
 		url = inputurl; 
 	}
