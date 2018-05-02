@@ -15,6 +15,10 @@ dependencies {
 android {
     compileSdkVersion 23
     buildToolsVersion '26.0.0'
+    defaultConfig{
+        versionCode 1
+        versionName "1.0.0"
+    }
     useLibrary 'org.apache.http.legacy'
     sourceSets {
         main {

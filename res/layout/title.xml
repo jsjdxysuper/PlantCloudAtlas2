@@ -28,15 +28,15 @@
             android:textColor="#ffffff"
             android:textSize="15sp" />
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/button1"
-            android:background="@drawable/title_btn_right2"
-            android:onClick="btn_setting"
-            android:textColor="#fff" />
+        <!--<Button-->
+            <!--android:id="@+id/button2"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_toLeftOf="@+id/button1"-->
+            <!--android:background="@drawable/title_btn_right2"-->
+            <!--android:onClick="btn_setting"-->
+            <!--android:textColor="#fff" />-->
 
         <Button
             android:id="@+id/button1"

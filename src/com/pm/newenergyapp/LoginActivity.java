@@ -48,6 +48,7 @@ public class LoginActivity extends Activity {
 	private String FGS_URL;
 	private String DC_URL;
 	private String JZ_URL;
+	private String RSA_URL;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -181,6 +182,7 @@ public class LoginActivity extends Activity {
 	public int checkLogin() {
 		loginCheckResult = 0;
 		loginServletURL = getApplication().getString(R.string.login_url);
+		RSA_URL = getApplication().getString(R.string.RSA_url);
 		//loginServletURL += "?userId=" + userid + "&pwd=" + password+"&hardwareId="+hardwareId;
 		// 设置HTTP POST请求参数必须用NameValuePair对象
 
