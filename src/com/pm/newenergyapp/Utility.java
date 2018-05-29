@@ -6,6 +6,8 @@ import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
+import org.apache.http.cookie.Cookie;
+
 import java.util.Locale;
 
 /**
@@ -19,7 +21,7 @@ public class Utility {
         String model = getSystemModel().replaceAll("-","_");
         String version = getSystemVersion().replaceAll("-","_");
         String brand = getDeviceBrand().replaceAll("-","_");
-        return androidId+"-"+serialNO+"-"+model+"-"+version+"-"+brand;
+        return androidId+"-"+serialNO+"-"+model+"-"+brand;
     }
 
     public static String getSerialNO(){

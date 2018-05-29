@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pm.newenergyapp"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0">
 
     <uses-sdk
         android:minSdkVersion="9"
@@ -10,40 +10,37 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/mytitle" >
+        android:theme="@style/mytitle">
         <activity
-            android:name="com.pm.newenergyapp.MainActivity"
-            android:label="@string/title_activity_main" >
-        </activity>
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"></activity>
         <activity
-            android:name="com.pm.newenergyapp.FgsActivity"
-            android:label="@string/title_activity_fgs" >
-        </activity>
+            android:name=".FgsActivity"
+            android:label="@string/title_activity_fgs"></activity>
         <activity
-            android:name="com.pm.newenergyapp.DcActivity"
-            android:label="@string/title_activity_dc" >
-        </activity>
+            android:name=".DcActivity"
+            android:label="@string/title_activity_dc"></activity>
         <activity
-            android:name="com.pm.newenergyapp.JzActivity"
-            android:label="@string/title_activity_jz" >
-        </activity>
+            android:name=".JzActivity"
+            android:label="@string/title_activity_jz"></activity>
         <activity
-            android:name="com.pm.newenergyapp.LoginActivity"
-            android:label="@string/title_activity_login" >
-        </activity>
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login"></activity>
         <activity
-            android:name="com.pm.newenergyapp.LoadingActivity"
-            android:label="@string/title_activity_loading" >
-        </activity>
+            android:name=".LoadingActivity"
+            android:label="@string/title_activity_loading"></activity>
         <activity
-            android:name="com.pm.newenergyapp.WelcomeActivity"
+            android:name=".WelcomeActivity"
             android:label="@string/title_activity_welcome"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,30 +48,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.pm.newenergyapp.SettingActivity"
-            android:label="@string/title_activity_setting" >
-        </activity>
+            android:name=".SettingActivity"
+            android:label="@string/title_activity_setting"></activity>
         <activity
-            android:name="com.pm.newenergyapp.UserinfoActivity"
-            android:label="@string/title_activity_userinfo" >
-        </activity>
+            android:name=".UserinfoActivity"
+            android:label="@string/title_activity_userinfo"></activity>
         <activity
-            android:name="com.pm.newenergyapp.ChangepwActivity"
-            android:label="@string/title_activity_changepw" >
-        </activity>
+            android:name=".ChangepwActivity"
+            android:label="@string/title_activity_changepw"></activity>
         <activity
-            android:name="com.pm.newenergyapp.AboutActivity"
-            android:label="@string/title_activity_about" >
-        </activity>
+            android:name=".AboutActivity"
+            android:label="@string/title_activity_about"></activity>
 
         <service
-            android:name="com.pm.newenergyapp.NetworkStateService"
+            android:name=".NetworkStateService"
             android:enabled="true" />
 
         <activity
-            android:name="com.pm.newenergyapp.HelpActivity"
-            android:label="@string/title_activity_help" >
-        </activity>
+            android:name=".HelpActivity"
+            android:label="@string/title_activity_help"></activity>
     </application>
 
 </manifest>

@@ -28,9 +28,13 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
+
+import com.kedong.utils.SessionUtil;
 
 
 public class MainActivity extends Activity {
@@ -66,7 +70,13 @@ public class MainActivity extends Activity {
 		//String imbi = Utility.getIMEI(context);
 		String serialNO = Utility.getSerialNO();
 		String sysVersion = Utility.getSystemVersion();
-		
+
+//		CookieSyncManager.createInstance(this);
+//		CookieManager cookieManager = CookieManager.getInstance();
+//		String cookieString = SessionUtil.cookie.getName()+"="+SessionUtil.cookie.getValue()+
+//				";domain="+SessionUtil.cookie.getDomain();
+//		cookieManager.setCookie(FgsActivity.url, cookieString);
+//		CookieSyncManager.getInstance().sync();
 		//监控网络状态服务启动
 //		Intent i = new Intent(context, NetworkStateService.class);
 //		startService(i);
