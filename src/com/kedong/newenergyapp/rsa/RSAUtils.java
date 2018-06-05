@@ -14,6 +14,8 @@ import java.util.HashMap;
 import javax.crypto.Cipher;
 
 public class RSAUtils {
+	public static String RSA_modulus;
+	public static String RSA_publicExponent;
 	private static String encryType = "RSA";
     private static String ciperType = "RSA/None/PKCS1Padding";
 	/**

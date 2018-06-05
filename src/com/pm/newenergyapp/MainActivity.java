@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.content.pm.PackageInstaller;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -35,6 +36,8 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.kedong.utils.SessionUtil;
+
+import org.apache.http.cookie.Cookie;
 
 
 public class MainActivity extends Activity {
@@ -71,12 +74,14 @@ public class MainActivity extends Activity {
 		String serialNO = Utility.getSerialNO();
 		String sysVersion = Utility.getSystemVersion();
 
-//		CookieSyncManager.createInstance(this);
-//		CookieManager cookieManager = CookieManager.getInstance();
-//		String cookieString = SessionUtil.cookie.getName()+"="+SessionUtil.cookie.getValue()+
-//				";domain="+SessionUtil.cookie.getDomain();
-//		cookieManager.setCookie(FgsActivity.url, cookieString);
-//		CookieSyncManager.getInstance().sync();
+        //可以让所有的webview共享此cookie
+		CookieSyncManager.createInstance(getApplication());
+		CookieManager cookieManager = CookieManager.getInstance();
+        Cookie cookie = SessionUtil.cookieStore.getCookies().get(0);
+		String cookieString = cookie.getName()+"="+cookie.getValue()+
+				";domain="+cookie.getDomain();
+		cookieManager.setCookie(FgsActivity.url, cookieString);
+		CookieSyncManager.getInstance().sync();
 		//监控网络状态服务启动
 //		Intent i = new Intent(context, NetworkStateService.class);
 //		startService(i);

@@ -48,14 +48,14 @@ public class SettingActivity extends Activity {
 			}
 		});
 		
-		btn_about = (RelativeLayout) findViewById(R.id.btn_about);
-		btn_about.setClickable(true);
-		btn_about.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				btnaboutClick();
-			}
-		});
+//		btn_about = (RelativeLayout) findViewById(R.id.btn_about);
+//		btn_about.setClickable(true);
+//		btn_about.setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				btnaboutClick();
+//			}
+//		});
 	}
 
 

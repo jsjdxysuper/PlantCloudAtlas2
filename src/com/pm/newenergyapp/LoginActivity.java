@@ -12,6 +12,7 @@ import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.BasicHttpContext;
@@ -19,7 +20,6 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
-import org.kobjects.util.Util;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.net.ConnectivityManager;
+
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,6 +42,9 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Toast;
 
 import com.kedong.newenergyapp.rsa.RSAUtils;
+
+import com.kedong.utils.AESUtil;
+import com.kedong.utils.DESUtil;
 import com.kedong.utils.SessionUtil;
 
 import java.security.interfaces.RSAPublicKey;
@@ -66,9 +70,9 @@ public class LoginActivity extends Activity {
 	private String JZ_URL;
 	private String RSA_URL;
 	private Handler webHandler;
-	public String RSA_modulus;
-	public String RSA_publicExponent;
+
 	public HttpClient httpClient;
+	private CookieStore cookieStore = null;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -159,7 +163,7 @@ public class LoginActivity extends Activity {
 	}
 
 	/**
-	 * 点击登录后的，网络连接状态
+	 * 点击登录后的，处理返回数据
 	 */
 	public void login_state(int loginState){
 		if (loginState == 1) {
@@ -195,6 +199,8 @@ public class LoginActivity extends Activity {
 			Dialog.showDialog("系统提示", "登录异常，\n请检查网络状态！", LoginActivity.this);
 		} else if (loginState == 5) {
 			Dialog.showDialog("系统提示", "登录超时，\n请检查网络状态！", LoginActivity.this);
+		} else if (loginState == 6) {
+			Dialog.showDialog("系统提示", "密码输入次数超过3次，\n请等待20分钟后再试！", LoginActivity.this);
 		}
 	}
 	public void login_mainweixin(View v) {
@@ -230,10 +236,11 @@ public class LoginActivity extends Activity {
 						//获取响应中的数据
 						String result= EntityUtils.toString(response.getEntity());
 						JSONObject jo = new JSONObject(result);
+						setCookieStore(response);
 //						public_exponent
 //								modulus
-						RSA_publicExponent = jo.getString("public_exponent");
-						RSA_modulus = jo.getString("modulus");
+						RSAUtils.RSA_publicExponent = jo.getString("public_exponent");
+						RSAUtils.RSA_modulus = jo.getString("modulus");
 						loginCheckResult = 1;
 					}else {
 						loginCheckResult = 3;
@@ -266,13 +273,14 @@ public class LoginActivity extends Activity {
 					HttpPost httpPost = new HttpPost(loginServletURL);
 					String userid = mUser.getText().toString();
 					String password = mPassword.getText().toString();
-
+					DESUtil du = new DESUtil();
+                    String des_password = du.encrypt(password);
 					//使用模和指数生成公钥和私钥
-					RSAPublicKey pubKey = RSAUtils.getPublicKey(RSA_modulus, RSA_publicExponent);
+					RSAPublicKey pubKey = RSAUtils.getPublicKey(RSAUtils.RSA_modulus, RSAUtils.RSA_publicExponent);
 
 					//加密后的密文
 					String secret_userid = RSAUtils.encryptByPublicKey(userid, pubKey);
-					String secret_pwd = RSAUtils.encryptByPublicKey(password, pubKey);
+					String secret_pwd = RSAUtils.encryptByPublicKey(des_password, pubKey);
 					// 设置httpPost请求参数
 					List<NameValuePair> params = new ArrayList<NameValuePair>();
 					params.add(new BasicNameValuePair("userId",secret_userid));
@@ -298,21 +306,13 @@ public class LoginActivity extends Activity {
 						String result= EntityUtils.toString(response.getEntity());
 						JSONObject jo = new JSONObject(result);
 						if (Integer.parseInt(jo.get("code").toString()) == 0||Integer.parseInt(jo.get("code").toString()) == 4) {//登陆成功
-
-                            List<Cookie> cookies = cookieStore.getCookies();
-                            if (!cookies.isEmpty()) {
-                                for (int i = cookies.size(); i > 0; i --) {
-                                    Cookie cookie = cookies.get(i - 1);
-                                    if (cookie.getName().equalsIgnoreCase("jsessionid")) {
-                                        // 使用一个常量来保存这个cookie，用于做session共享之用
-                                        SessionUtil.cookie = cookie;
-                                    }
-                                }
-                            }
+							//setCookieStore(response);
 							loginCheckResult = 1;
 						} else if (Integer.parseInt(jo.get("code").toString()) == 1||Integer.parseInt(jo.get("code").toString()) == 2||
 									Integer.parseInt(jo.get("code").toString()) == 3) {
 							loginCheckResult = 2;
+						}else if (Integer.parseInt(jo.get("code").toString()) == 6) {
+							loginCheckResult = 6;
 						}
 					}else {
 						loginCheckResult = 3;
@@ -330,5 +330,26 @@ public class LoginActivity extends Activity {
 			}
 		}.start();
 
+	}
+
+	/**
+	 * 将cookie保存到静态变量中供后续调用
+	 * @param httpResponse
+	 */
+	public void setCookieStore(HttpResponse httpResponse) {
+		System.out.println("----setCookieStore");
+		cookieStore = new BasicCookieStore();
+		// JSESSIONID
+		String setCookie = httpResponse.getFirstHeader("Set-Cookie").getValue();
+		String JSESSIONID = setCookie.substring("JSESSIONID=".length(),
+				setCookie.indexOf(";"));
+		System.out.println("JSESSIONID:" + JSESSIONID);
+		// 新建一个Cookie
+		BasicClientCookie cookie = new BasicClientCookie("JSESSIONID",JSESSIONID);
+		cookie.setVersion(0);
+		cookie.setDomain(getApplication().getString(R.string.domain));
+		cookie.setPath("/"+getApplication().getString(R.string.projectPath));
+		cookieStore.addCookie(cookie);
+		SessionUtil.cookieStore = cookieStore;
 	}
 }

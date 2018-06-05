@@ -23,13 +23,13 @@
                 android:background="@drawable/preference_first_item"
                 android:gravity="center_vertical" >
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:text="用户信息"
-                    android:textColor="#000"
-                    android:textSize="17sp" />
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:padding="8dp"-->
+                    <!--android:text="用户信息"-->
+                    <!--android:textColor="#000"-->
+                    <!--android:textSize="17sp" />-->
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -64,30 +64,30 @@
                     android:src="@drawable/mm_submenu" />
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/btn_about"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:background="@drawable/preference_single_item"
-                android:gravity="center_vertical" >
+            <!--<RelativeLayout-->
+                <!--android:id="@+id/btn_about"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="14dp"-->
+                <!--android:background="@drawable/preference_single_item"-->
+                <!--android:gravity="center_vertical" >-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:text="应用信息"
-                    android:textColor="#000"
-                    android:textSize="17sp" />
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:padding="8dp"-->
+                    <!--android:text="应用信息"-->
+                    <!--android:textColor="#000"-->
+                    <!--android:textSize="17sp" />-->
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:scaleType="matrix"
-                    android:src="@drawable/mm_submenu" />
-            </RelativeLayout>
+                <!--<ImageView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:scaleType="matrix"-->
+                    <!--android:src="@drawable/mm_submenu" />-->
+            <!--</RelativeLayout>-->
 
             <Button
                 android:layout_width="fill_parent"
