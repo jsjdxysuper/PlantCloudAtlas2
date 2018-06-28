@@ -6,9 +6,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -20,6 +23,7 @@ public class JzActivity extends Activity {
 	private long timeout = 10000;
     private Handler mHandler = new Handler();
     private Timer timer;
+	public static int flag = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +62,25 @@ public class JzActivity extends Activity {
 			public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 				super.onReceivedError(view, errorCode, description, failingUrl); 
 				JzActivity.loadoptionurl("file:///android_asset/nonet.html");
+			}
+
+			@Override
+			public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+				handler.proceed();
+			}
+
+			@Override
+			public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+				String url1 =getApplication().getString(R.string.page1_url);
+				String url2 = getApplication().getString(R.string.page2_url);
+				String url3 = getApplication().getString(R.string.page3_url);
+				if (url.contains(url1)||url.contains(url2)||url.contains(url3)) {
+					return super.shouldInterceptRequest(view, url);//正常加载
+				}else{
+
+					flag = 1;
+					return super.shouldInterceptRequest(view, url);//正常加载
+				}
 			}
 		});
 	}

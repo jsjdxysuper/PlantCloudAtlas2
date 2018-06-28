@@ -5,14 +5,19 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 public class FgsActivity extends Activity {
 	
@@ -21,7 +26,8 @@ public class FgsActivity extends Activity {
 	private long timeout = 10000;
     private Handler mHandler = new Handler();
     private Timer timer;
-    
+    public static int flag = 0;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,7 +40,7 @@ public class FgsActivity extends Activity {
 		wv.getSettings().setLoadWithOverviewMode(true);
 
 		//支持 Javascript
-		wv.getSettings().setJavaScriptEnabled(true);  
+		wv.getSettings().setJavaScriptEnabled(true);
 		
 		//不使用缓存
 		wv.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
@@ -58,6 +64,39 @@ public class FgsActivity extends Activity {
 			public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 				super.onReceivedError(view, errorCode, description, failingUrl); 
 				FgsActivity.loadoptionurl("file:///android_asset/nonet.html");
+			}
+			@Override
+			public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+				handler.proceed();
+			}
+
+//			@Override
+//			// 在点击请求的是链接是才会调用，重写此方法返回true表明点击网页里面的链接还是在当前的webview里跳转，不跳到浏览器那边。这个函数我们可以做很多操作，比如我们读取到某些特殊的URL，于是就可以不打开地址，取消这个操作，进行预先定义的其他操作，这对一个程序是非常必要的。
+//			public WebResourceResponse shouldInterceptRequest(WebView view, final WebResourceRequest request) {
+//				// 判断url链接中是否含有某个字段，如果有就执行指定的跳转（不执行跳转url链接），如果没有就加载url链接
+//				String url1 = "ababab";
+//				String url2 = getApplication().getString(R.string.page2_url);
+//				String url3 = getApplication().getString(R.string.page3_url);
+//				if (url.contains(url1)||url.contains(url2)||url.contains(url3)) {
+//					return super.shouldInterceptRequest(view, request);
+//				} else {
+//					Dialog.showDialog("系统提示", "网页被劫持，请重新登录", FgsActivity.this);
+//					return super.shouldInterceptRequest(view, request);
+//				}
+//			}
+
+			@Override
+			public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+				String url1 =  getApplication().getString(R.string.page1_url);
+				String url2 = getApplication().getString(R.string.page2_url);
+				String url3 = getApplication().getString(R.string.page3_url);
+				if (url.contains(url1)||url.contains(url2)||url.contains(url3)) {
+					return super.shouldInterceptRequest(view, url);//正常加载
+				}else{
+
+					flag = 1;
+					return super.shouldInterceptRequest(view, url);//正常加载
+				}
 			}
 		});
 	}

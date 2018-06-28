@@ -21,7 +21,8 @@ public class Utility {
         String model = getSystemModel().replaceAll("-","_");
         String version = getSystemVersion().replaceAll("-","_");
         String brand = getDeviceBrand().replaceAll("-","_");
-        return androidId+"-"+serialNO+"-"+model+"-"+brand;
+//        return androidId+"-"+serialNO+"-"+model+"-"+brand;
+        return serialNO+"-"+model+"-"+brand;
     }
 
     public static String getSerialNO(){

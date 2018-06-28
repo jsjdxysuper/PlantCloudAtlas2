@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.kedong.newenergyapp.rsa.RSAUtils;
 import com.kedong.utils.DESUtil;
 import com.kedong.utils.SessionUtil;
+import com.kedong.utils.WholenessCheck;
 
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
@@ -67,11 +68,6 @@ public class ChangepwActivity extends Activity {
 					progressDialog.dismiss();
 					webRetDeal(loginState);
 				}
-//				else if(msg.what == 0x124){//login
-//					progressDialog.dismiss();
-//					int loginState = (int)msg.obj;
-//					login_state(loginState);
-//				}
 			}
 		};
 	}
@@ -132,12 +128,12 @@ public class ChangepwActivity extends Activity {
 		} else if (et_xmm.getText().toString().equals(et_xmmqr.getText().toString()) == false){
 			Dialog.showDialog("错误", "两次填写的密码不一致，\n请正确输入！", ChangepwActivity.this);
 		} else {
-			checkLogin();
+			changePwdThreadFun();
 		}
 	}
 	
 
-	public void checkLogin() {
+	public void changePwdThreadFun() {
 		loginCheckResult = 0;
 		loginServletURL =getApplication().getString(R.string.change_pwd_url);
 		progressDialog=ProgressDialog.show(ChangepwActivity.this, "启动", "正在验证原密码、提交修改后密码，请稍后……");
@@ -171,7 +167,8 @@ public class ChangepwActivity extends Activity {
                     HttpPost httpPost = new HttpPost(loginServletURL);
 					httpPost.setEntity(new UrlEncodedFormEntity( params , HTTP.UTF_8 ));
 					//在这里执行请求,访问url，并获取响应
-					HttpClient httpClient = new DefaultHttpClient();
+//					HttpClient httpClient = new DefaultHttpClient();
+					HttpClient httpClient = CertificateValidationIgnored.getNoCertificateHttpClient("");
                     ((AbstractHttpClient) httpClient).setCookieStore(SessionUtil.cookieStore);//写cookie
 					// 请求超时  10s
 					httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 15000 ) ;
@@ -184,8 +181,15 @@ public class ChangepwActivity extends Activity {
 						//获取响应中的数据
 						String result= EntityUtils.toString(response.getEntity());
                         JSONObject jo = new JSONObject(result);
+						String checkCodeRemote = (String )jo.remove("MD5Code");
 
-						if (Integer.parseInt(jo.get("code").toString()) == 0) {
+						String joStr = WholenessCheck.decode(jo.toString(), RSAUtils.RSA_modulus);
+						JSONObject joTemp = new JSONObject(joStr);
+						String checkCodeLocal = (String )joTemp.remove("MD5Code");
+						if(checkCodeRemote.compareTo(checkCodeLocal)!=0){
+							loginCheckResult = 7;
+						}
+						else if (Integer.parseInt(jo.get("code").toString()) == 0) {
 							loginCheckResult = 1;
 						} else if (Integer.parseInt(jo.get("code").toString()) == 1||
                                 Integer.parseInt(jo.get("code").toString()) == 2) {

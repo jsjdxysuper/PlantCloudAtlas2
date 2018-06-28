@@ -25,12 +25,49 @@
     <!--<string name="page2_url">http://47.94.218.215:6069/NewEnergyApp/page2_init.so</string>-->
     <!--<string name="page3_url">http://47.94.218.215:6069/NewEnergyApp/page3_init.so</string>-->
     <!--<string name="change_pwd_url">http://47.94.218.215:6069/NewEnergyApp/login_changePwd.so</string>-->
-    <string name="domain">192.168.1.119</string>
+
+
+    <!--<string name="domain">192.168.53.93</string>-->
+    <!--<string name="projectPath">NewEnergyApp</string>-->
+    <!--<string name="RSA_url">http://192.168.53.93:8080/NewEnergyApp/login_getPublicKey.so</string>-->
+    <!--<string name="login_url">http://192.168.53.93:8080/NewEnergyApp/login_loginCheck.so</string>-->
+    <!--<string name="page1_url">http://192.168.53.93:8080/NewEnergyApp/page1_init.so</string>-->
+    <!--<string name="page2_url">http://192.168.53.93:8080/NewEnergyApp/page2_init.so</string>-->
+    <!--<string name="page3_url">http://192.168.53.93:8080/NewEnergyApp/page3_init.so</string>-->
+    <!--<string name="change_pwd_url">http://192.168.53.93:8080/NewEnergyApp/login_changePwd.so</string>-->
+    <!--<string name="deleteSession_url">http://192.168.53.93:8080/NewEnergyApp/login_deleteSession.so</string>-->
+    <!--<string name="image_check_rrl">http://192.168.53.93:8080/NewEnergyApp/imageCheck_getCheckImage.so</string>-->
+
+    <string name="domain">192.168.0.107</string>
     <string name="projectPath">NewEnergyApp</string>
-    <string name="RSA_url">http://192.168.1.119:8080/NewEnergyApp/login_getPublicKey.so</string>
-    <string name="login_url">http://192.168.1.119:8080/NewEnergyApp/login_loginCheck.so</string>
-    <string name="page1_url">http://192.168.1.119:8080/NewEnergyApp/page1_init.so</string>
-    <string name="page2_url">http://192.168.1.119:8080/NewEnergyApp/page2_init.so</string>
-    <string name="page3_url">http://192.168.1.119:8080/NewEnergyApp/page3_init.so</string>
-    <string name="change_pwd_url">http://192.168.1.119:8080/NewEnergyApp/login_changePwd.so</string>
+    <string name="RSA_url">http://192.168.0.107:8080/NewEnergyApp/login_getPublicKey.so</string>
+    <string name="login_url">http://192.168.0.107:8080/NewEnergyApp/login_loginCheck.so</string>
+    <string name="page1_url">http://192.168.0.107:8080/NewEnergyApp/page1_init.so</string>
+    <string name="page2_url">http://192.168.0.107:8080/NewEnergyApp/page2_init.so</string>
+    <string name="page3_url">http://192.168.0.107:8080/NewEnergyApp/page3_init.so</string>
+    <string name="change_pwd_url">http://192.168.0.107:8080/NewEnergyApp/login_changePwd.so</string>
+    <string name="deleteSession_url">http://192.168.0.107:8080/NewEnergyApp/login_deleteSession.so</string>
+    <string name="image_check_rrl">http://192.168.0.107:8080/NewEnergyApp/imageCheck_getCheckImage.so</string>
+
+    <!--<string name="domain">192.168.53.93</string>-->
+    <!--<string name="projectPath">NewEnergyApp</string>-->
+    <!--<string name="RSA_url">https://192.168.53.93/NewEnergyApp/login_getPublicKey.so</string>-->
+    <!--<string name="login_url">https://192.168.53.93/NewEnergyApp/login_loginCheck.so</string>-->
+    <!--<string name="page1_url">https://192.168.53.93/NewEnergyApp/page1_init.so</string>-->
+    <!--<string name="page2_url">https://192.168.53.93/NewEnergyApp/page2_init.so</string>-->
+    <!--<string name="page3_url">https://192.168.53.93/NewEnergyApp/page3_init.so</string>-->
+    <!--<string name="change_pwd_url">https://192.168.53.93/NewEnergyApp/login_changePwd.so</string>-->
+    <!--<string name="deleteSession_url">https://192.168.53.93/NewEnergyApp/login_deleteSession.so</string>-->
+    <!--<string name="image_check_rrl">https://192.168.53.93/NewEnergyApp/imageCheck_getCheckImage.so</string>-->
+
+    <!--<string name="domain">www.lnsdxny.top</string>-->
+    <!--<string name="projectPath">NewEnergyApp</string>-->
+    <!--<string name="RSA_url">https://www.lnsdxny.top/NewEnergyApp/login_getPublicKey.so</string>-->
+    <!--<string name="login_url">https://www.lnsdxny.top/NewEnergyApp/login_loginCheck.so</string>-->
+    <!--<string name="page1_url">https://www.lnsdxny.top/NewEnergyApp/page1_init.so</string>-->
+    <!--<string name="page2_url">https://www.lnsdxny.top/NewEnergyApp/page2_init.so</string>-->
+    <!--<string name="page3_url">https://www.lnsdxny.top/NewEnergyApp/page3_init.so</string>-->
+    <!--<string name="change_pwd_url">https://www.lnsdxny.top/NewEnergyApp/login_changePwd.so</string>-->
+    <!--<string name="deleteSession_url">https://www.lnsdxny.top/NewEnergyApp/login_deleteSession.so</string>-->
+    <!--<string name="image_check_rrl">https://www.lnsdxny.top/NewEnergyApp/imageCheck_getCheckImage.so</string>-->
 </resources>

@@ -8,5 +8,5 @@ import org.apache.http.client.CookieStore;
 
 public class SessionUtil {
     public static CookieStore cookieStore;
-
+    public static String checkCode;
 }
