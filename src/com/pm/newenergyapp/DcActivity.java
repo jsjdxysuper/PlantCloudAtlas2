@@ -16,9 +16,10 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.graphics.Bitmap;
 
+import com.kedong.app.BaseActivity;
 
 
-public class DcActivity extends Activity {
+public class DcActivity extends BaseActivity {
 
 	static ProgressWebView wv;
 	static String url;

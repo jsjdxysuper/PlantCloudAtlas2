@@ -19,7 +19,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-public class FgsActivity extends Activity {
+import com.kedong.app.BaseActivity;
+
+public class FgsActivity extends BaseActivity {
 	
 	static ProgressWebView wv;
 	static String url;

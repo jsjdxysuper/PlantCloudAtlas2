@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-public class WelcomeActivity extends Activity {
+import com.kedong.app.BaseActivity;
+
+public class WelcomeActivity extends BaseActivity {
 
 	private final int SPLASH_DISPLAY_LENGHT = 2000; //延迟三秒
 

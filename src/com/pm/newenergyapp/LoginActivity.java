@@ -48,6 +48,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.kedong.app.BaseActivity;
 import com.kedong.newenergyapp.rsa.RSAUtils;
 
 import com.kedong.utils.AESUtil;
@@ -60,7 +61,7 @@ import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends BaseActivity {
 
 	private EditText mUser; // 帐号编辑框
 	private EditText mPassword; // 密码编辑框
@@ -69,8 +70,8 @@ public class LoginActivity extends Activity {
 
     private String hardwareId;
 	private int loginCheckResult = 0;
-	private CheckBox rem_pw;
-	private CheckBox auto_login;
+//	private CheckBox rem_pw;
+//	private CheckBox auto_login;
 	private SharedPreferences sp;
 	private String userid = "";
 
@@ -84,25 +85,43 @@ public class LoginActivity extends Activity {
 	private ImageView imageCheckControl;
 
 	private CookieStore cookieStore = null;
-	@Override
+
+    private Handler handler=new Handler();
+    private Runnable imageCheckRunnable;
+    @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        imageCheckRunnable=new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                //要做的事情
+                webGetCheckImage(null);
+                handler.postDelayed(this, 1000*60);
+            }
+        };
+        handler.postDelayed(imageCheckRunnable, 1000*60);
+
+
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.login);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlelogin);
 
-		FGS_URL = getApplication().getString(R.string.page1_url)+"?yhid=";
-		DC_URL = getApplication().getString(R.string.page2_url)+"?yhid=";
-		JZ_URL = getApplication().getString(R.string.page3_url)+"?yhid=";
+//		FGS_URL = getApplication().getString(R.string.page1_url)+"?yhid=";
+//		DC_URL = getApplication().getString(R.string.page2_url)+"?yhid=";
+//		JZ_URL = getApplication().getString(R.string.page3_url)+"?yhid=";
 
+		FGS_URL = getApplication().getString(R.string.page1_url);
+		DC_URL = getApplication().getString(R.string.page2_url);
+		JZ_URL = getApplication().getString(R.string.page3_url);
 		hardwareId = Utility.getUnicId(this);
 		//获得实例对象
 		sp = this.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
 		mUser = (EditText)findViewById(R.id.login_user_edit);
 		checkCodeET = (EditText)findViewById(R.id.image_check_input);
 		mPassword = (EditText)findViewById(R.id.login_passwd_edit);
-		rem_pw = (CheckBox) findViewById(R.id.isjz);
-		auto_login = (CheckBox) findViewById(R.id.iszd);
+//		rem_pw = (CheckBox) findViewById(R.id.isjz);
+//		auto_login = (CheckBox) findViewById(R.id.iszd);
 		imageCheckControl = (ImageView)findViewById(R.id.check_image_bitmap);
 		webHandler = new Handler(){
 			public void handleMessage(Message msg){
@@ -111,13 +130,14 @@ public class LoginActivity extends Activity {
 					progressDialog.dismiss();
 					if(loginState==1) {
 						Toast.makeText(LoginActivity.this,("获取加密组件成功\n"), Toast.LENGTH_SHORT).show();
+						webGetCheckImage(null);
                         // 判断自动登陆多选框状态
-                        if (sp.getBoolean("AUTO_ISCHECK", false)) {
+//                        if (sp.getBoolean("AUTO_ISCHECK", false)) {
                             // 设置默认是自动登录状态
-                            auto_login.setChecked(true);
-                            // 跳转界面
-                            login_mainweixin(null);
-                        }
+//                            auto_login.setChecked(true);
+//                            // 跳转界面
+//                            login_mainweixin(null);
+//                        }
 					}
 					else
 						Dialog.showDialog("", "获取加密组件失败\n请检查网络连接", LoginActivity.this);
@@ -130,54 +150,58 @@ public class LoginActivity extends Activity {
 					progressDialog.dismiss();
 					Bitmap bitmap = (Bitmap)msg.obj;
 					imageCheckControl.setImageBitmap(bitmap);
+				}else if(msg.what == 0x130){//login
+					progressDialog.dismiss();
+					Toast.makeText(LoginActivity.this,("通讯数据可能被篡改，请重新登录\n"), Toast.LENGTH_SHORT).show();
 				}
+
 			}
 		};
 
-		// 判断记住密码多选框的状态
-		if (sp.getBoolean("ISCHECK", false)) {
-			// 设置默认是记录密码状态
-			rem_pw.setChecked(true);
-			mUser.setText(sp.getString("USER_NAME", ""));
-			mPassword.setText(sp.getString("PASSWORD", ""));
-		}
+//		// 判断记住密码多选框的状态
+//		if (sp.getBoolean("ISCHECK", false)) {
+//			// 设置默认是记录密码状态
+//			rem_pw.setChecked(true);
+//			mUser.setText(sp.getString("USER_NAME", ""));
+//			mPassword.setText(sp.getString("PASSWORD", ""));
+//		}
 
 
 
-		//监听记住密码多选框按钮事件
-		rem_pw.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-				if (rem_pw.isChecked()) {
-					System.out.println("记住密码已选中");
-					sp.edit().putBoolean("ISCHECK", true).commit();
-				}else {
-					System.out.println("记住密码没有选中");
-					sp.edit().putBoolean("ISCHECK", false).commit();
-					auto_login.setChecked(false);
-					sp.edit().putBoolean("AUTO_ISCHECK", false).commit();
-				}
-
-			}
-		});
+//		//监听记住密码多选框按钮事件
+//		rem_pw.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+//			public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+//				if (rem_pw.isChecked()) {
+//					System.out.println("记住密码已选中");
+//					sp.edit().putBoolean("ISCHECK", true).commit();
+//				}else {
+//					System.out.println("记住密码没有选中");
+//					sp.edit().putBoolean("ISCHECK", false).commit();
+////					auto_login.setChecked(false);
+////					sp.edit().putBoolean("AUTO_ISCHECK", false).commit();
+//				}
+//
+//			}
+//		});
 
 		//监听自动登录多选框事件
-		auto_login.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-				if (auto_login.isChecked()) {
-					System.out.println("自动登录已选中");
-					sp.edit().putBoolean("AUTO_ISCHECK", true).commit();
-					rem_pw.setChecked(true);
-					sp.edit().putBoolean("ISCHECK", true).commit();
-
-				} else {
-					System.out.println("自动登录没有选中");
-					sp.edit().putBoolean("AUTO_ISCHECK", false).commit();
-				}
-			}
-		});
+//		auto_login.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+//			public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+//				if (auto_login.isChecked()) {
+//					System.out.println("自动登录已选中");
+//					sp.edit().putBoolean("AUTO_ISCHECK", true).commit();
+//					rem_pw.setChecked(true);
+//					sp.edit().putBoolean("ISCHECK", true).commit();
+//
+//				} else {
+//					System.out.println("自动登录没有选中");
+//					sp.edit().putBoolean("AUTO_ISCHECK", false).commit();
+//				}
+//			}
+//		});
 		//获取RSA加密的公钥
 		getRSAPublic();
-		webGetCheckImage(null);
+
 	}
 	public void good(){
 		Dialog.showDialog("修改失败", "原密码不正确，\n请检查后重新输入！", LoginActivity.this);
@@ -192,6 +216,7 @@ public class LoginActivity extends Activity {
 					//在这里执行请求,访问url，并获取响应
 //					HttpClient httpClient = new DefaultHttpClient();
 					HttpClient httpClient = CertificateValidationIgnored.getNoCertificateHttpClient("");
+					((AbstractHttpClient) httpClient).setCookieStore(SessionUtil.cookieStore);//写cookie
 					// 请求超时  10s
 					httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 15000 ) ;
 					// 读取超时  10s
@@ -209,8 +234,15 @@ public class LoginActivity extends Activity {
 						checkCode = des.decrypt(checkCode);
 						SessionUtil.checkCode = checkCode;
 						String imageDataStr = (String)jo.get("imageData");
-
-
+						String wholeCheck = (String)jo.get("wholeCheck");
+						String localWholeCheck = WholenessCheck.justCode(checkCode,null);
+						if(wholeCheck.compareTo(localWholeCheck)!=0)
+						{
+							Message msg = new Message();
+							msg.what = 0x130;
+							msg.obj = "";
+							webHandler.sendMessage(msg);
+						}
 
 
 						if ("".compareTo(checkCode)==0||null==checkCode||
@@ -242,13 +274,13 @@ public class LoginActivity extends Activity {
 	 */
 	public void login_state(int loginState){
 		if (loginState == 1) {
-			if (rem_pw.isChecked()) {
-				// 记住用户名、密码、
-				Editor editor = sp.edit();
-				editor.putString("USER_NAME", mUser.getText().toString());
-				editor.putString("PASSWORD", mPassword.getText().toString());
-				editor.commit();
-			}
+//			if (rem_pw.isChecked()) {
+//				// 记住用户名、密码、
+//				Editor editor = sp.edit();
+//				editor.putString("USER_NAME", mUser.getText().toString());
+//				editor.putString("PASSWORD", mPassword.getText().toString());
+//				editor.commit();
+//			}
 
 			userid = mUser.getText().toString();
 
@@ -257,17 +289,21 @@ public class LoginActivity extends Activity {
 			ChangepwActivity.setUserid(userid);
 
 
-			FgsActivity.setUrl(FGS_URL + userid);
-			DcActivity.setUrl(DC_URL + userid);
-			JzActivity.setUrl(JZ_URL + userid);
-
-
+//			FgsActivity.setUrl(FGS_URL + userid);
+//			DcActivity.setUrl(DC_URL + userid);
+//			JzActivity.setUrl(JZ_URL + userid);
+            handler.removeCallbacks(imageCheckRunnable);
+			startTimer();
+			FgsActivity.setUrl(FGS_URL );
+			DcActivity.setUrl(DC_URL );
+			JzActivity.setUrl(JZ_URL );
 			Intent intent = new Intent();
 			intent.setClass(LoginActivity.this,LoadingActivity.class);
 			startActivity(intent);
 			this.finish();
 		} else if (loginState == 2) {
 			Dialog.showDialog("登录失败", "用户或者密码不正确或者设备未注册，\n请检查后重新输入！", LoginActivity.this);
+            webGetCheckImage(null);
 		} else if (loginState == 3) {
 			Dialog.showDialog("系统提示", "数据连接失败，\n请检查网络状态！", LoginActivity.this);
 		} else if (loginState == 4) {
@@ -275,19 +311,19 @@ public class LoginActivity extends Activity {
 		} else if (loginState == 5) {
 			Dialog.showDialog("系统提示", "登录超时，\n请检查网络状态！", LoginActivity.this);
 		} else if (loginState == 6) {
-			Dialog.showDialog("系统提示", "密码输入次数超过3次，\n请等待20分钟后再试！", LoginActivity.this);
+			Dialog.showDialog("系统提示", "密码或验证码输入次数超过3次，\n请等待20分钟后再试！", LoginActivity.this);
 		}else if (loginState == 7) {
 			Dialog.showDialog("系统提示", "返回结果遭到恶意用户篡改，\n请重新登录！", LoginActivity.this);
+		}else if (loginState == 9) {
+			Dialog.showDialog("登录错误", "验证码错误或为空，\n请输入后再登录！", LoginActivity.this);
+            webGetCheckImage(null);
 		}
 	}
 	public void login_mainweixin(View v) {
-		String checkCode = checkCodeET.getText().toString();
-		if("".equals(checkCode)||!checkCode.equals(SessionUtil.checkCode)){
-			Dialog.showDialog("登录错误", "验证码错误或为空，\n请输入后再登录！", LoginActivity.this);
-		}
-		else if (isConnectInternet() == true) {
+        if (isConnectInternet() == true) {
 			if ("".equals(mUser.getText().toString()) || "".equals(mPassword.getText().toString())) {
 				Dialog.showDialog("登录错误", "用户或者密码不能为空，\n请输入后再登录！", LoginActivity.this);
+                webGetCheckImage(null);
 			} else {
 				checkLogin();
 			}
@@ -324,10 +360,17 @@ public class LoginActivity extends Activity {
 						String result= EntityUtils.toString(response.getEntity());
 						JSONObject jo = new JSONObject(result);
 						setCookieStore(response);
-//						public_exponent
-//								modulus
+
 						RSAUtils.RSA_publicExponent = jo.getString("public_exponent");
 						RSAUtils.RSA_modulus = jo.getString("modulus");
+						String remoteCheckCode = (String)jo.getString("MD5Code");
+						String localCheckCode = WholenessCheck.justCode(RSAUtils.RSA_modulus+RSAUtils.RSA_publicExponent,null);
+						if(remoteCheckCode.compareTo(localCheckCode)!=0){
+							Message msg = new Message();
+							msg.what = 0x130;
+							msg.obj = "";
+							webHandler.sendMessage(msg);
+						}
 						loginCheckResult = 1;
 					}else {
 						loginCheckResult = 3;
@@ -349,7 +392,12 @@ public class LoginActivity extends Activity {
 		loginCheckResult = 0;
 		loginServletURL = getApplication().getString(R.string.login_url);
 
-		//loginServletURL += "?userId=" + userid + "&pwd=" + password+"&hardwareId="+hardwareId;
+
+//		if("".equals(checkCode)||!checkCode.equals(SessionUtil.checkCode)){
+//			Dialog.showDialog("登录错误", "验证码错误或为空，\n请输入后再登录！", LoginActivity.this);
+//		}
+//		else
+			//loginServletURL += "?userId=" + userid + "&pwd=" + password+"&hardwareId="+hardwareId;
 		// 设置HTTP POST请求参数必须用NameValuePair对象
 		progressDialog=ProgressDialog.show(LoginActivity.this, "登录", "验证中，请稍后……");
 		new Thread() {
@@ -362,6 +410,7 @@ public class LoginActivity extends Activity {
 					HttpPost httpPost = new HttpPost(loginServletURL);
 					String userid = mUser.getText().toString();
 					String password = mPassword.getText().toString();
+					String checkCode = checkCodeET.getText().toString();
 					DESUtil du = new DESUtil();
                     String des_password = du.encrypt(password);
 					//使用模和指数生成公钥和私钥
@@ -376,7 +425,10 @@ public class LoginActivity extends Activity {
 					params.add(new BasicNameValuePair("pwd", secret_pwd));
 
 					params.add(new BasicNameValuePair("hardwareId",hardwareId));
+					params.add(new BasicNameValuePair("checkCode",checkCode));
 
+					String MD5Code = WholenessCheck.justCode(secret_userid+secret_pwd+hardwareId+checkCode,null);
+					params.add(new BasicNameValuePair("MD5Code",MD5Code));
 					httpPost.setEntity(new UrlEncodedFormEntity( params , HTTP.UTF_8 ));
 					//在这里执行请求,访问url，并获取响应
 
@@ -384,9 +436,9 @@ public class LoginActivity extends Activity {
 					httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 15000 ) ;
 					// 读取超时  10s
 					httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 15000 );
-                    HttpContext context = new BasicHttpContext();
-                    CookieStore cookieStore = new BasicCookieStore();
-                    context.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
+//                    HttpContext context = new BasicHttpContext();
+//                    CookieStore cookieStore = new BasicCookieStore();
+//                    context.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
 
 					HttpResponse response = httpClient.execute( httpPost) ;
 					int resCode = response.getStatusLine().getStatusCode();
@@ -402,7 +454,10 @@ public class LoginActivity extends Activity {
 						JSONObject joTemp = new JSONObject(joStr);
 						String checkCodeLocal = (String )joTemp.remove("MD5Code");
 						if(checkCodeRemote.compareTo(checkCodeLocal)!=0){
-							loginCheckResult = 7;
+							Message msg = new Message();
+							msg.what = 0x130;
+							msg.obj = "";
+							webHandler.sendMessage(msg);
 						}
 						else if (Integer.parseInt(jo.get("code").toString()) == 0||Integer.parseInt(jo.get("code").toString()) == 4) {//登陆成功,0成功，4硬件id以前为空
 							//setCookieStore(response);
@@ -412,7 +467,10 @@ public class LoginActivity extends Activity {
 							loginCheckResult = 2;
 						}else if (Integer.parseInt(jo.get("code").toString()) == 6) {//输入密码错误次数超过3次
 							loginCheckResult = 6;
+						}else if (Integer.parseInt(jo.get("code").toString()) == 7) {//验证码输入错误
+							loginCheckResult = 9;
 						}
+
 					}else {
 						loginCheckResult = 3;
 					}

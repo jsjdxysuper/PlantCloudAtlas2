@@ -13,7 +13,9 @@ import android.view.Window;
 import android.widget.RelativeLayout;
 import android.view.View.OnClickListener;
 
-public class SettingActivity extends Activity {
+import com.kedong.app.BaseActivity;
+
+public class SettingActivity extends BaseActivity {
 	private RelativeLayout rl_userinfo;
 	private RelativeLayout btn_changepw;
 	private RelativeLayout btn_about;
@@ -30,14 +32,14 @@ public class SettingActivity extends Activity {
 		instance = this;
 		sp = this.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
 
-		rl_userinfo = (RelativeLayout) findViewById(R.id.btn_userinfo);
-		rl_userinfo.setClickable(true);
-		rl_userinfo.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				btnuserinfoClick();
-			}
-		});
+//		rl_userinfo = (RelativeLayout) findViewById(R.id.btn_userinfo);
+//		rl_userinfo.setClickable(true);
+//		rl_userinfo.setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				btnuserinfoClick();
+//			}
+//		});
 
 		btn_changepw = (RelativeLayout) findViewById(R.id.btn_changepw);
 		btn_changepw.setClickable(true);

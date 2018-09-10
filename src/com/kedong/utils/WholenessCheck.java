@@ -2,7 +2,6 @@ package com.kedong.utils;
 
 import net.sf.json.JSONObject;
 
-import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
@@ -26,9 +25,16 @@ public class WholenessCheck {
 		jo.put("MD5Code", afterMD5);
 		return jo.toString();
 	}
-    @Test
-	public void ttt1(){
-		String joStr = WholenessCheck.decode("{'name':'ding','age':'31'}", null);
-		System.out.println("joStr: "+joStr);
+
+	public static String justCode(String content,String pwd){
+		if(pwd==null)
+			pwd=keyData;
+		String afterMD5="";
+		try {
+			afterMD5 = MD5Util.md5Password(content+pwd);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return afterMD5;
 	}
 }

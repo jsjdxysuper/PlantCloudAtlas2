@@ -39,6 +39,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kedong.app.BaseActivity;
 import com.kedong.newenergyapp.rsa.RSAUtils;
 import com.kedong.utils.DESUtil;
 import com.kedong.utils.SessionUtil;
@@ -64,7 +65,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends BaseActivity {
 
 	static MainActivity instance;
 	private Handler webHandler;
@@ -133,6 +134,7 @@ public class MainActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		deleteSessionUrl = getApplication().getString(R.string.deleteSession_url);
 		webHandler = new Handler(){
 			public void handleMessage(Message msg){

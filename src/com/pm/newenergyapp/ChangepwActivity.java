@@ -67,6 +67,9 @@ public class ChangepwActivity extends Activity {
 					int loginState = (int)msg.obj;
 					progressDialog.dismiss();
 					webRetDeal(loginState);
+				}else if(msg.what == 0x130){//login
+					progressDialog.dismiss();
+					Toast.makeText(ChangepwActivity.this,("通讯数据可能被篡改，请重新登录\n"), Toast.LENGTH_SHORT).show();
 				}
 			}
 		};
@@ -163,7 +166,8 @@ public class ChangepwActivity extends Activity {
 					params.add(new BasicNameValuePair("origin_pwd", secret_origin_pwd));
 					params.add(new BasicNameValuePair("pwd",secret_pwd));
                     // 创建HttpClientBuilder
-
+					String MD5Code = WholenessCheck.justCode(secret_userid+secret_origin_pwd+secret_pwd,null);
+					params.add(new BasicNameValuePair("MD5Code",MD5Code));
                     HttpPost httpPost = new HttpPost(loginServletURL);
 					httpPost.setEntity(new UrlEncodedFormEntity( params , HTTP.UTF_8 ));
 					//在这里执行请求,访问url，并获取响应
@@ -187,7 +191,10 @@ public class ChangepwActivity extends Activity {
 						JSONObject joTemp = new JSONObject(joStr);
 						String checkCodeLocal = (String )joTemp.remove("MD5Code");
 						if(checkCodeRemote.compareTo(checkCodeLocal)!=0){
-							loginCheckResult = 7;
+							Message msg = new Message();
+							msg.what = 0x130;
+							msg.obj = "";
+							webHandler.sendMessage(msg);
 						}
 						else if (Integer.parseInt(jo.get("code").toString()) == 0) {
 							loginCheckResult = 1;
@@ -196,6 +203,12 @@ public class ChangepwActivity extends Activity {
 							loginCheckResult = 2;
 						} else if (Integer.parseInt(jo.get("code").toString()) == 3) {
 							loginCheckResult = 6;//密码太简单，不符合要求
+						}else if (Integer.parseInt(jo.get("code").toString()) == 4) {
+							loginCheckResult = 7;//完整性校验没通过
+							Message msg = new Message();
+							msg.what = 0x130;
+							msg.obj = "";
+							webHandler.sendMessage(msg);
 						}
 					}else {
 						loginCheckResult = 3;

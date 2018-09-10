@@ -81,16 +81,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp" >
 
-            <CheckBox
-                android:id="@+id/isjz"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@drawable/checkbox_style_two"
-                android:text="记住密码"
-                android:textColor="#FFFFFF"
-                android:textSize="16dp" />
+            <!--<CheckBox-->
+                <!--android:id="@+id/isjz"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:button="@drawable/checkbox_style_two"-->
+                <!--android:text="记住密码"-->
+                <!--android:textColor="#FFFFFF"-->
+                <!--android:textSize="16dp" />-->
 
-            <CheckBox
+            <!--<CheckBox
                 android:id="@+id/iszd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
                 android:button="@drawable/checkbox_style_two"
                 android:text="自动登录"
                 android:textColor="#FFFFFF"
-                android:textSize="16dp" />
+                android:textSize="16dp" />-->
         </LinearLayout>
         <Button
             android:id="@+id/login_login_btn"

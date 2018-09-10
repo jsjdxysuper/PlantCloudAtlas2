@@ -1,9 +1,12 @@
 package com.pm.newenergyapp;
 
 import android.app.Activity;
+import android.os.BaseBundle;
 import android.os.Bundle;
 
-public class HelpActivity extends Activity {
+import com.kedong.app.BaseActivity;
+
+public class HelpActivity extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

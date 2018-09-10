@@ -16,7 +16,9 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public class JzActivity extends Activity {
+import com.kedong.app.BaseActivity;
+
+public class JzActivity extends BaseActivity {
 
 	static ProgressWebView wv;
 	static String url;
