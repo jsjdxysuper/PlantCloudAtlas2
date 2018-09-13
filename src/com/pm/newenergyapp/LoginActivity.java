@@ -6,35 +6,28 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.conn.ConnectTimeoutException;
-import org.apache.http.cookie.Cookie;
-import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
-import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HTTP;
-import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
-
-import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
-
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -47,16 +40,11 @@ import android.widget.EditText;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.kedong.app.BaseActivity;
 import com.kedong.newenergyapp.rsa.RSAUtils;
-
-import com.kedong.utils.AESUtil;
 import com.kedong.utils.DESUtil;
 import com.kedong.utils.SessionUtil;
 import com.kedong.utils.WholenessCheck;
-
-import java.io.InputStream;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,8 +58,8 @@ public class LoginActivity extends BaseActivity {
 
     private String hardwareId;
 	private int loginCheckResult = 0;
-//	private CheckBox rem_pw;
-//	private CheckBox auto_login;
+	private CheckBox rem_pw;
+	private CheckBox auto_login;
 	private SharedPreferences sp;
 	private String userid = "";
 
@@ -88,6 +76,8 @@ public class LoginActivity extends BaseActivity {
 
     private Handler handler=new Handler();
     private Runnable imageCheckRunnable;
+
+	int notification_id=1;
     @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -100,16 +90,12 @@ public class LoginActivity extends BaseActivity {
                 handler.postDelayed(this, 1000*60);
             }
         };
-        handler.postDelayed(imageCheckRunnable, 1000*60);
+
 
 
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.login);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlelogin);
-
-//		FGS_URL = getApplication().getString(R.string.page1_url)+"?yhid=";
-//		DC_URL = getApplication().getString(R.string.page2_url)+"?yhid=";
-//		JZ_URL = getApplication().getString(R.string.page3_url)+"?yhid=";
 
 		FGS_URL = getApplication().getString(R.string.page1_url);
 		DC_URL = getApplication().getString(R.string.page2_url);
@@ -120,8 +106,10 @@ public class LoginActivity extends BaseActivity {
 		mUser = (EditText)findViewById(R.id.login_user_edit);
 		checkCodeET = (EditText)findViewById(R.id.image_check_input);
 		mPassword = (EditText)findViewById(R.id.login_passwd_edit);
-//		rem_pw = (CheckBox) findViewById(R.id.isjz);
-//		auto_login = (CheckBox) findViewById(R.id.iszd);
+
+		rem_pw = (CheckBox) findViewById(R.id.isjz);
+		auto_login = (CheckBox) findViewById(R.id.iszd);
+
 		imageCheckControl = (ImageView)findViewById(R.id.check_image_bitmap);
 		webHandler = new Handler(){
 			public void handleMessage(Message msg){
@@ -130,14 +118,14 @@ public class LoginActivity extends BaseActivity {
 					progressDialog.dismiss();
 					if(loginState==1) {
 						Toast.makeText(LoginActivity.this,("获取加密组件成功\n"), Toast.LENGTH_SHORT).show();
-						webGetCheckImage(null);
+						handler.postDelayed(imageCheckRunnable, 100);
                         // 判断自动登陆多选框状态
-//                        if (sp.getBoolean("AUTO_ISCHECK", false)) {
+                        if (sp.getBoolean("AUTO_ISCHECK", false)) {
                             // 设置默认是自动登录状态
-//                            auto_login.setChecked(true);
+                            auto_login.setChecked(true);
 //                            // 跳转界面
-//                            login_mainweixin(null);
-//                        }
+                            login_mainweixin(null);
+                        }
 					}
 					else
 						Dialog.showDialog("", "获取加密组件失败\n请检查网络连接", LoginActivity.this);
@@ -158,51 +146,66 @@ public class LoginActivity extends BaseActivity {
 			}
 		};
 
-//		// 判断记住密码多选框的状态
-//		if (sp.getBoolean("ISCHECK", false)) {
-//			// 设置默认是记录密码状态
-//			rem_pw.setChecked(true);
-//			mUser.setText(sp.getString("USER_NAME", ""));
-//			mPassword.setText(sp.getString("PASSWORD", ""));
-//		}
+		// 判断记住密码多选框的状态
+		if (sp.getBoolean("ISCHECK", false)) {
+			// 设置默认是记录密码状态
+			rem_pw.setChecked(true);
+			mUser.setText(sp.getString("USER_NAME", ""));
+			mPassword.setText(sp.getString("PASSWORD", ""));
+		}
 
 
 
-//		//监听记住密码多选框按钮事件
-//		rem_pw.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-//			public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-//				if (rem_pw.isChecked()) {
-//					System.out.println("记住密码已选中");
-//					sp.edit().putBoolean("ISCHECK", true).commit();
-//				}else {
-//					System.out.println("记住密码没有选中");
-//					sp.edit().putBoolean("ISCHECK", false).commit();
-////					auto_login.setChecked(false);
-////					sp.edit().putBoolean("AUTO_ISCHECK", false).commit();
-//				}
-//
-//			}
-//		});
+		//监听记住密码多选框按钮事件
+		rem_pw.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+				if (rem_pw.isChecked()) {
+					System.out.println("记住密码已选中");
+					sp.edit().putBoolean("ISCHECK", true).commit();
+				}else {
+					System.out.println("记住密码没有选中");
+					sp.edit().putBoolean("ISCHECK", false).commit();
+					auto_login.setChecked(false);
+					sp.edit().putBoolean("AUTO_ISCHECK", false).commit();
+				}
+
+			}
+		});
 
 		//监听自动登录多选框事件
-//		auto_login.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-//			public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-//				if (auto_login.isChecked()) {
-//					System.out.println("自动登录已选中");
-//					sp.edit().putBoolean("AUTO_ISCHECK", true).commit();
-//					rem_pw.setChecked(true);
-//					sp.edit().putBoolean("ISCHECK", true).commit();
-//
-//				} else {
-//					System.out.println("自动登录没有选中");
-//					sp.edit().putBoolean("AUTO_ISCHECK", false).commit();
-//				}
-//			}
-//		});
+		auto_login.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+				if (auto_login.isChecked()) {
+					System.out.println("自动登录已选中");
+					sp.edit().putBoolean("AUTO_ISCHECK", true).commit();
+					rem_pw.setChecked(true);
+					sp.edit().putBoolean("ISCHECK", true).commit();
+
+				} else {
+					System.out.println("自动登录没有选中");
+					sp.edit().putBoolean("AUTO_ISCHECK", false).commit();
+				}
+			}
+		});
 		//获取RSA加密的公钥
 		getRSAPublic();
-
 	}
+
+
+	private void sendNotification() {
+		NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		Notification.Builder builder = new Notification.Builder(this);
+		Intent mIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://blog.csdn.net/xiangzhihong8"));
+		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, mIntent, 0);
+		builder.setContentIntent(pendingIntent);
+		builder.setSmallIcon(R.drawable.ic_launcher);
+		builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher));
+		builder.setAutoCancel(true);
+		builder.setContentTitle(getApplication().getString(R.string.title_activity_title));
+		builder.setContentText("水新处关于风电场整改的通知");
+		nm.notify(0, builder.build());
+	}
+
 	public void good(){
 		Dialog.showDialog("修改失败", "原密码不正确，\n请检查后重新输入！", LoginActivity.this);
 	}
@@ -211,7 +214,7 @@ public class LoginActivity extends BaseActivity {
 			public void run(){
 				Bitmap bitmap = null;
 				try {
-					String imageCheckUrl = getApplication().getString(R.string.image_check_rrl);
+					String imageCheckUrl = getApplication().getString(R.string.image_check_url);
 					HttpPost httpPost = new HttpPost(imageCheckUrl);
 					//在这里执行请求,访问url，并获取响应
 //					HttpClient httpClient = new DefaultHttpClient();
@@ -274,13 +277,13 @@ public class LoginActivity extends BaseActivity {
 	 */
 	public void login_state(int loginState){
 		if (loginState == 1) {
-//			if (rem_pw.isChecked()) {
-//				// 记住用户名、密码、
-//				Editor editor = sp.edit();
-//				editor.putString("USER_NAME", mUser.getText().toString());
-//				editor.putString("PASSWORD", mPassword.getText().toString());
-//				editor.commit();
-//			}
+			if (rem_pw.isChecked()) {
+				// 记住用户名、密码、
+				SharedPreferences.Editor editor = sp.edit();
+				editor.putString("USER_NAME", mUser.getText().toString());
+				editor.putString("PASSWORD", mPassword.getText().toString());
+				editor.commit();
+			}
 
 			userid = mUser.getText().toString();
 
