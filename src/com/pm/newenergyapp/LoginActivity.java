@@ -47,6 +47,7 @@ import com.kedong.utils.SessionUtil;
 import com.kedong.utils.WholenessCheck;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JsonConfig;
 
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
@@ -463,11 +464,23 @@ public class LoginActivity extends BaseActivity {
 //							webHandler.sendMessage(msg);
 //						}
 //						else
-							if (Integer.parseInt(jo.get("code").toString()) == 0||Integer.parseInt(jo.get("code").toString()) == 4) {//登陆成功,0成功，4硬件id以前为空
+						if (Integer.parseInt(jo.get("code").toString()) == 0||Integer.parseInt(jo.get("code").toString()) == 4) {//登陆成功,0成功，4硬件id以前为空
 							//setCookieStore(response);
-							JSONArray ja = JSONArray.fromObject(jo.get("msg").toString());
-							List<UserPage> list = (List)JSONArray.toList(ja, UserPage.class);
-							JzActivity.setUrlList(list);
+								String msgStr = jo.get("msg").toString();
+								JSONArray ja = JSONArray.fromObject(msgStr);
+//							List<UserPage> list = (List)JSONArray.toList(ja, UserPage.class);
+							List<UserPage> listUserPage = new ArrayList<UserPage>();
+							for(int i=0;i<ja.size();i++){
+								UserPage temp = new UserPage();
+								net.sf.json.JSONObject joTempUserpage = ja.getJSONObject(i);
+								temp.setId(joTempUserpage.get("id").toString());
+								temp.setOrder_int(Integer.parseInt(joTempUserpage.get("order_int").toString()));
+								temp.setPagename(joTempUserpage.get("pagename").toString());
+								temp.setPageUrl(joTempUserpage.get("pageUrl").toString());
+								listUserPage.add(temp);
+							}
+//							List<UserPage> list = JSONArray.toList(ja, UserPage.class,new JsonConfig());
+							JzActivity.setUrlList(listUserPage);
 							loginCheckResult = 1;
 						} else if (Integer.parseInt(jo.get("code").toString()) == 1||Integer.parseInt(jo.get("code").toString()) == 2||
 									Integer.parseInt(jo.get("code").toString()) == 3) {//密码或者用户名错误，或者登陆手机不是注册过的id
