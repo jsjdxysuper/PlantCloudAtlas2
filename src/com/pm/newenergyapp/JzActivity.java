@@ -1,8 +1,8 @@
 package com.pm.newenergyapp;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
-
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -15,13 +15,13 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
 import com.kedong.app.BaseActivity;
 
 public class JzActivity extends BaseActivity {
 
-	static ProgressWebView wv;
-	static String url;
+	public static List<UserPage> urlList = new ArrayList<UserPage>();
+	private ProgressWebView wv;
+	private String url;
 	private long timeout = 10000;
     private Handler mHandler = new Handler();
     private Timer timer;
@@ -63,7 +63,7 @@ public class JzActivity extends BaseActivity {
 			@Override
 			public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 				super.onReceivedError(view, errorCode, description, failingUrl); 
-				JzActivity.loadoptionurl("file:///android_asset/nonet.html");
+				loadoptionurl("file:///android_asset/nonet.html");
 			}
 
 			@Override
@@ -88,27 +88,27 @@ public class JzActivity extends BaseActivity {
 	}
 
 	
-	public static void loadoptionurl(String optionurl) {
+	public void loadoptionurl(String optionurl) {
 		wv.loadUrl(optionurl);
 	}
 
-	public static void loadurl() {
+	public void loadurl() {
 		wv.loadUrl(url);
 	}
 	
-	public static void stoploadurl() {
+	public void stoploadurl() {
 		wv.stopLoading();
 	}
 	
-	public static void goback() {
+	public void goback() {
 		wv.goBack();
 	}
 	
-	public static int getprogress() {
+	public int getprogress() {
 		return wv.getProgress();
 	}
 	
-	public static void setUrl(String inputurl) {
+	public void setUrl(String inputurl) {
 		url = inputurl; 
 	}
 
@@ -145,5 +145,24 @@ public class JzActivity extends BaseActivity {
 				break;
 			}
 		}
-	};	
+	};
+
+	public ProgressWebView getWv() {
+		return wv;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setWv(ProgressWebView wv) {
+		this.wv = wv;
+	}
+	public void setTimeout(long timeout) {
+		this.timeout = timeout;
+	}
+	public static List<UserPage> getUrlList() {
+		return urlList;
+	}
+	public static void setUrlList(List<UserPage> urlList) {
+		JzActivity.urlList = urlList;
+	}
 }

@@ -26,16 +26,16 @@
     <!--<string name="page3_url">http://47.94.218.215:6069/NewEnergyApp/page3_init.so</string>-->
     <!--<string name="change_pwd_url">http://47.94.218.215:6069/NewEnergyApp/login_changePwd.so</string>-->
 
-    <string name="domain">192.168.0.109</string>
+    <string name="domain">192.168.0.103</string>
     <string name="projectPath">NEApp</string>
-    <string name="RSA_url">http://192.168.0.109:8080/NEApp/login_getPublicKey</string>
-    <string name="login_url">http://192.168.0.109:8080/NEApp/login_loginCheck</string>
-    <string name="page1_url">http://192.168.0.109:8080/NEApp/page1_init</string>
-    <string name="page2_url">http://192.168.0.109:8080/NEApp/page2_init</string>
-    <string name="page3_url">http://192.168.0.109:8080/NEApp/page3_init</string>
-    <string name="change_pwd_url">http://192.168.0.109:8080/NEApp/login_changePwd</string>
-    <string name="deleteSession_url">http://192.168.0.109:8080/NEApp/login_deleteSession</string>
-    <string name="image_check_url">http://192.168.0.109:8080/NEApp/imageCheck_getCheckImage</string>
+    <string name="RSA_url">http://192.168.0.103:8080/NEApp/login_getPublicKey</string>
+    <string name="login_url">http://192.168.0.103:8080/NEApp/login_loginCheck</string>
+    <string name="page1_url">http://192.168.0.103:8080/NEApp/windOutline</string>
+    <string name="page2_url">http://192.168.0.103:8080/NEApp/lightOutline</string>
+    <string name="page3_url">http://192.168.0.103:8080/NEApp/dayReportOutline</string>
+    <string name="change_pwd_url">http://192.168.0.103:8080/NEApp/login_changePwd</string>
+    <string name="deleteSession_url">http://192.168.0.103:8080/NEApp/login_deleteSession</string>
+    <string name="image_check_url">http://192.168.0.103:8080/NEApp/imageCheck_getCheckImage</string>
 
 
 

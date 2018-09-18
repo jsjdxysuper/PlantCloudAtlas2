@@ -45,6 +45,9 @@ import com.kedong.newenergyapp.rsa.RSAUtils;
 import com.kedong.utils.DESUtil;
 import com.kedong.utils.SessionUtil;
 import com.kedong.utils.WholenessCheck;
+
+import net.sf.json.JSONArray;
+
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +79,7 @@ public class LoginActivity extends BaseActivity {
 
     private Handler handler=new Handler();
     private Runnable imageCheckRunnable;
-
+	private List<UserPage>userPageList;
 	int notification_id=1;
     @Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -297,11 +300,8 @@ public class LoginActivity extends BaseActivity {
 //			JzActivity.setUrl(JZ_URL + userid);
             handler.removeCallbacks(imageCheckRunnable);
 			startTimer();
-			FgsActivity.setUrl(FGS_URL );
-			DcActivity.setUrl(DC_URL );
-			JzActivity.setUrl(JZ_URL );
 			Intent intent = new Intent();
-			intent.setClass(LoginActivity.this,LoadingActivity.class);
+			intent.setClass(LoginActivity.this,MainActivity.class);
 			startActivity(intent);
 			this.finish();
 		} else if (loginState == 2) {
@@ -455,15 +455,19 @@ public class LoginActivity extends BaseActivity {
 
 						String joStr = WholenessCheck.decode(jo.toString(), RSAUtils.RSA_modulus);
 						JSONObject joTemp = new JSONObject(joStr);
-						String checkCodeLocal = (String )joTemp.remove("MD5Code");
-						if(checkCodeRemote.compareTo(checkCodeLocal)!=0){
-							Message msg = new Message();
-							msg.what = 0x130;
-							msg.obj = "";
-							webHandler.sendMessage(msg);
-						}
-						else if (Integer.parseInt(jo.get("code").toString()) == 0||Integer.parseInt(jo.get("code").toString()) == 4) {//登陆成功,0成功，4硬件id以前为空
+//						String checkCodeLocal = (String )joTemp.remove("MD5Code");
+//						if(checkCodeRemote.compareTo(checkCodeLocal)!=0){
+//							Message msg = new Message();
+//							msg.what = 0x130;
+//							msg.obj = "";
+//							webHandler.sendMessage(msg);
+//						}
+//						else
+							if (Integer.parseInt(jo.get("code").toString()) == 0||Integer.parseInt(jo.get("code").toString()) == 4) {//登陆成功,0成功，4硬件id以前为空
 							//setCookieStore(response);
+							JSONArray ja = JSONArray.fromObject(jo.get("msg").toString());
+							List<UserPage> list = (List)JSONArray.toList(ja, UserPage.class);
+							JzActivity.setUrlList(list);
 							loginCheckResult = 1;
 						} else if (Integer.parseInt(jo.get("code").toString()) == 1||Integer.parseInt(jo.get("code").toString()) == 2||
 									Integer.parseInt(jo.get("code").toString()) == 3) {//密码或者用户名错误，或者登陆手机不是注册过的id

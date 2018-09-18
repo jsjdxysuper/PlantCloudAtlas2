@@ -80,7 +80,8 @@ public class MainActivity extends BaseActivity {
 	private int bmpW;// 动画图片宽度
 	private ImageView cursor;// 动画图片
 	private String deleteSessionUrl;
-
+	private int pageNo;
+	private List<JzActivity>allPageAct;
 	@Override
 	public void onDestroy(){
 
@@ -175,45 +176,48 @@ public class MainActivity extends BaseActivity {
 		initTextView();
 		initPagerViewer();
 
-		new Thread() {
-			public void run() {
-				try {
-					FgsActivity.loadurl();
-					Thread.sleep(1000);
-					FgsActivity.loadurl();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+//		new Thread() {
+//			public void run() {
+//				try {
+//					FgsActivity.loadurl();
+//					Thread.sleep(1000);
+//					FgsActivity.loadurl();
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
+//		}.start();
+//
+//		new Thread() {
+//			public void run() {
+//				try {
+//					DcActivity.loadurl();
+//					Thread.sleep(1000);
+//					DcActivity.loadurl();
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
+//		}.start();
+		allPageAct = new ArrayList<JzActivity>();
+		for(pageNo = 0;pageNo<JzActivity.getUrlList().size();pageNo++){
+			new Thread() {
+				public void run() {
+					try {
+						JzActivity jzAc = new JzActivity();
+						allPageAct.add(jzAc);
+						jzAc.setUrl(JzActivity.getUrlList().get(pageNo).getPageUrl());
+						jzAc.loadurl();
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
-			}
-		}.start();
+			}.start();
+		}
 
-		new Thread() {
-			public void run() {
-				try {
-					DcActivity.loadurl();
-					Thread.sleep(1000);
-					DcActivity.loadurl();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}.start();
-
-		new Thread() {
-			public void run() {
-				try {
-					JzActivity.loadurl();
-					Thread.sleep(1000);
-					JzActivity.loadurl();
-
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}.start();
 	}
 	/**
 	 * 初始化标题
@@ -235,9 +239,9 @@ public class MainActivity extends BaseActivity {
 	private void initPagerViewer() {
 		pager = (ViewPager) findViewById(R.id.vPager);
 		final ArrayList<View> list = new ArrayList<View>();
-		Intent intent = new Intent(context, FgsActivity.class);
+		Intent intent = new Intent(context, JzActivity.class);
 		list.add(getView("A", intent));
-		Intent intent2 = new Intent(context, DcActivity.class);
+		Intent intent2 = new Intent(context, JzActivity.class);
 		list.add(getView("B", intent2));
 		Intent intent3 = new Intent(context, JzActivity.class);
 		list.add(getView("C", intent3));
@@ -404,12 +408,12 @@ public class MainActivity extends BaseActivity {
 	public void btn_flash(View source) {
 		if (isConnectInternet() == true) {
 			if (currIndex == 0)
-				FgsActivity.loadurl();
+				allPageAct.get(0).loadurl();
 
 			if (currIndex == 1)
-				DcActivity.loadurl();
+				allPageAct.get(1).loadurl();
 			if (currIndex == 2)
-				JzActivity.loadurl();
+				allPageAct.get(2).loadurl();
 
 //			if(FgsActivity.flag==1) {
 //				//Toast.makeText(getApplicationContext(), ("用户访问内容被劫持，请重新刷新\n"), Toast.LENGTH_SHORT).show();
