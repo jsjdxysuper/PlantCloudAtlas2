@@ -28,7 +28,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.2'
-        classpath 'com.github.czy1121:update:1.1.1'
+//        classpath 'com.github.czy1121:update:1.1.1'
     }
 }
 apply plugin: 'android'
@@ -40,11 +40,11 @@ dependencies {
 //    implementation 'net.sf.json-lib:json-lib:2.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'junit:junit:4.12'
-    implementation 'com.github.czy1121:update:1.1.1'
+//    implementation 'com.github.czy1121:update:1.1.1'
 }
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 28
     buildToolsVersion '28.0.1'
     defaultConfig {
         versionCode 1

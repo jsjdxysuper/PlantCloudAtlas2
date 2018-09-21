@@ -1,29 +1,15 @@
 package com.pm.newenergyapp;
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
-import android.net.http.SslError;
+import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.os.Message;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
-import android.webkit.JsPromptResult;
-import android.webkit.JsResult;
-import android.webkit.SslErrorHandler;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceResponse;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import org.json.JSONObject;
 
@@ -35,7 +21,7 @@ import ezy.boost.update.UpdateInfo;
 import ezy.boost.update.UpdateManager;
 
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends Activity {
     protected static final String TAG = "MainActivity";
     public static List<UserPage> listUserPage;
     private View currentButton;
@@ -89,17 +75,24 @@ public class MainActivity extends FragmentActivity {
 
                         return info;
                     }
-                }).check();
+                }).setWifiOnly(false).check();
             }
         });
         DisplayMetrics dm = getResources().getDisplayMetrics();
         int phoneWidth = dm.widthPixels;
         int phoneHeight = dm.heightPixels;
 
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+
         for(int i=0;i<listUserPage.size();i++){
-            fragList.add(new Fragment_Two());
+            Fragment_Two fragment_two = new Fragment_Two();
+
+            fragList.add(fragment_two);
             fragList.get(i).setIndex(i);
             fragList.get(i).setUrl(listUserPage.get(i).getPageUrl());
+            ft.add(R.id.fl_content, fragList.get(i),""+i);
+
 
             LinearLayout btnLayout = (LinearLayout)findViewById(R.id.buttom_bar_group);
             RelativeLayout rl = (RelativeLayout)View.inflate(MainActivity.this, R.layout.bottom_button, null);
@@ -118,6 +111,9 @@ public class MainActivity extends FragmentActivity {
 
             webViewUrl.add("我是URL"+(i+1));
         }
+//        ft.show(fm.findFragmentByTag(0+""));
+        ft.commitAllowingStateLoss();
+        fm.executePendingTransactions();
         initComponents();
 
     }
@@ -127,32 +123,33 @@ public class MainActivity extends FragmentActivity {
      * @param fragment_two
      * @return
      */
-    public boolean hasThisFragment(Fragment_Two fragment_two){
-        FragmentManager fm = getSupportFragmentManager();
-
-        List<Fragment> frList = fm.getFragments();
-        int fragIndexThis = fragment_two.getIndex();
-        if(frList==null)return false;
-        for(int i=0;i<frList.size();i++) {
-            int fragIndexTemp = ((Fragment_Two)frList.get(i)).getIndex();
-            if (fragIndexTemp==fragIndexThis)
-                return true;
-        }
-        return false;
-    }
+//    public boolean hasThisFragment(Fragment_Two fragment_two){
+//        FragmentManager fm = getFragmentManager();
+//        fm.
+//        List<Fragment> frList = fm.getFragments();
+//        int fragIndexThis = fragment_two.getIndex();
+//        if(frList==null)return false;
+//        for(int i=0;i<frList.size();i++) {
+//            int fragIndexTemp = ((Fragment_Two)frList.get(i)).getIndex();
+//            if (fragIndexTemp==fragIndexThis)
+//                return true;
+//        }
+//        return false;
+//    }
 
     /**
      * 隐藏所有显示过的fragment
      * @param ft
-     * @param frList
+     * @param fm
      */
-    public void hideFragment(FragmentTransaction ft, List<Fragment> frList) {
+    public void hideFragment(FragmentTransaction ft, FragmentManager fm) {
         //如果不为空，就先隐藏起来ft.
-        if(frList!=null) {
-            for (int i = 0; i < frList.size(); i++) {
-                ft.hide(frList.get(i));
+
+            for (int i = 0; i < fragList.size(); i++) {
+                Fragment_Two fragment_two = (Fragment_Two)fm.findFragmentByTag(i+"");
+                ft.hide(fragment_two);
             }
-        }
+
     }
     @Override
     protected void onStart() {
@@ -164,16 +161,16 @@ public class MainActivity extends FragmentActivity {
                 @Override
                 public void onClick(View v) {
                     int btnIndex = (Integer)((Button)v).getTag();
-                    FragmentManager fm = getSupportFragmentManager();
+                    FragmentManager fm = getFragmentManager();
                     FragmentTransaction ft = fm.beginTransaction();
-                    hideFragment(ft,fm.getFragments());
-                    if(!hasThisFragment(fragList.get(btnIndex))){
-                        ft.add(R.id.fl_content, fragList.get(btnIndex));
-                    }else{
-                        ft.show(fragList.get(btnIndex));
-                    }
-//                    ft.replace(R.id.fl_content, fragList.get(btnIndex), MainActivity.TAG);
-//                    ft.commit();
+                    hideFragment(ft,fm);
+//                    if(!hasThisFragment(fragList.get(btnIndex))){
+//                        ft.add(R.id.fl_content, fragList.get(btnIndex));
+//                    }else{
+//                        ft.show(fragList.get(btnIndex));
+//                    }
+                    Fragment_Two fragment_two = (Fragment_Two)fm.findFragmentByTag(btnIndex+"");
+                    ft.show(fragment_two);
                     ft.commitAllowingStateLoss();
                     fm.executePendingTransactions();
 
