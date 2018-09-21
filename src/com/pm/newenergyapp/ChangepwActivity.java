@@ -241,7 +241,7 @@ public class ChangepwActivity extends Activity {
 				intent.setClass(ChangepwActivity.this,LoginActivity.class);
 				startActivity(intent);
 
-				MainActivity.getInstance().finish();
+//				MainActivity.getInstance().finish();
 				SettingActivity.getInstance().finish();
 				ChangepwActivity.this.finish();
 				break;

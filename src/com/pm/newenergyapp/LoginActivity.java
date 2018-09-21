@@ -15,6 +15,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -45,10 +46,6 @@ import com.kedong.newenergyapp.rsa.RSAUtils;
 import com.kedong.utils.DESUtil;
 import com.kedong.utils.SessionUtil;
 import com.kedong.utils.WholenessCheck;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JsonConfig;
-
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
 import java.util.List;
@@ -295,10 +292,6 @@ public class LoginActivity extends BaseActivity {
 			UserinfoActivity.setUserid(userid);
 			ChangepwActivity.setUserid(userid);
 
-
-//			FgsActivity.setUrl(FGS_URL + userid);
-//			DcActivity.setUrl(DC_URL + userid);
-//			JzActivity.setUrl(JZ_URL + userid);
             handler.removeCallbacks(imageCheckRunnable);
 			startTimer();
 			Intent intent = new Intent();
@@ -324,16 +317,30 @@ public class LoginActivity extends BaseActivity {
 		}
 	}
 	public void login_mainweixin(View v) {
-        if (isConnectInternet() == true) {
-			if ("".equals(mUser.getText().toString()) || "".equals(mPassword.getText().toString())) {
-				Dialog.showDialog("登录错误", "用户或者密码不能为空，\n请输入后再登录！", LoginActivity.this);
-                webGetCheckImage(null);
-			} else {
-				checkLogin();
-			}
-		} else{
-			Dialog.showDialog("系统提示", "没有可用网络连接，\n请检查网络状态！", LoginActivity.this);
+		String pageName[] = {"风电","光伏","日报"};
+		String pageU[] = {"https://www.lnsdxny.top/NEApp/windOutline","https://www.lnsdxny.top/NEApp/lightOutline","https://www.lnsdxny.top/NEApp/dayReportOutline"};
+		List<UserPage> listUserPage = new ArrayList<UserPage>();
+		for(int i=0;i<3;i++){
+			UserPage temp = new UserPage();
+
+			temp.setId("sxc");
+			temp.setOrder_int(i);
+			temp.setPagename(pageName[i]);
+			temp.setPageUrl(pageU[i]);
+			listUserPage.add(temp);
 		}
+		MainActivity.listUserPage = listUserPage;
+		login_state(1);
+//        if (isConnectInternet() == true) {
+//			if ("".equals(mUser.getText().toString()) || "".equals(mPassword.getText().toString())) {
+//				Dialog.showDialog("登录错误", "用户或者密码不能为空，\n请输入后再登录！", LoginActivity.this);
+//                webGetCheckImage(null);
+//			} else {
+//				checkLogin();
+//			}
+//		} else{
+//			Dialog.showDialog("系统提示", "没有可用网络连接，\n请检查网络状态！", LoginActivity.this);
+//		}
 	}
 
 	public boolean isConnectInternet() {
@@ -467,20 +474,19 @@ public class LoginActivity extends BaseActivity {
 						if (Integer.parseInt(jo.get("code").toString()) == 0||Integer.parseInt(jo.get("code").toString()) == 4) {//登陆成功,0成功，4硬件id以前为空
 							//setCookieStore(response);
 								String msgStr = jo.get("msg").toString();
-								JSONArray ja = JSONArray.fromObject(msgStr);
+								JSONArray ja = new JSONArray(msgStr);
 //							List<UserPage> list = (List)JSONArray.toList(ja, UserPage.class);
 							List<UserPage> listUserPage = new ArrayList<UserPage>();
-							for(int i=0;i<ja.size();i++){
+							for(int i=0;i<ja.length();i++){
 								UserPage temp = new UserPage();
-								net.sf.json.JSONObject joTempUserpage = ja.getJSONObject(i);
+								JSONObject joTempUserpage = ja.getJSONObject(i);
 								temp.setId(joTempUserpage.get("id").toString());
 								temp.setOrder_int(Integer.parseInt(joTempUserpage.get("order_int").toString()));
 								temp.setPagename(joTempUserpage.get("pagename").toString());
 								temp.setPageUrl(joTempUserpage.get("pageUrl").toString());
 								listUserPage.add(temp);
 							}
-//							List<UserPage> list = JSONArray.toList(ja, UserPage.class,new JsonConfig());
-							JzActivity.setUrlList(listUserPage);
+							MainActivity.listUserPage = listUserPage;
 							loginCheckResult = 1;
 						} else if (Integer.parseInt(jo.get("code").toString()) == 1||Integer.parseInt(jo.get("code").toString()) == 2||
 									Integer.parseInt(jo.get("code").toString()) == 3) {//密码或者用户名错误，或者登陆手机不是注册过的id

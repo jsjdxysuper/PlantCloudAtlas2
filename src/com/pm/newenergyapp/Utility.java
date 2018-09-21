@@ -2,6 +2,8 @@ package com.pm.newenergyapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -91,5 +93,39 @@ public class Utility {
             return tm.getDeviceId();
         }
         return null;
+    }
+
+    /**
+     * 获取版本名称
+     * @param context
+     * @return
+     */
+    public static String getVersionName(Context context){
+        PackageManager manager = context.getPackageManager();
+        String name = null;
+        try {
+            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+            name = info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return name;
+    }
+
+    /**
+     * 获取版本号
+     * @param context
+     * @return
+     */
+    public static int getVersionCode(Context context){
+        PackageManager manager = context.getPackageManager();
+        int versionCode = 0;
+        try {
+            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+            versionCode = info.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return versionCode;
     }
 }

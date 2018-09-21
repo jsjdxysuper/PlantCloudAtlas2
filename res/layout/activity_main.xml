@@ -1,73 +1,57 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:umadsdk="http://schemas.android.com/apk/res-auto"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vPager"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1.0"
-        android:background="#000000"
-        android:flipInterval="30"
-        android:persistentDrawingCache="animation" />
-
-    <RelativeLayout
-        android:id="@+id/main_bottom"
+    <LinearLayout
+        android:id="@+id/buttom_bar_group"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/bottom_bar"
         android:gravity="center_vertical"
-        android:orientation="vertical" >
+        android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/cursor"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:scaleType="matrix"
-            android:layout_gravity="bottom"
-            android:src="@drawable/tab_bg" />
+        <!--<RelativeLayout style="@style/ButtomBar">-->
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_alignParentBottom="true"
-            android:paddingBottom="2dp" >
+            <!--<ImageButton-->
+                <!--android:id="@+id/buttom_one"-->
+                <!--style="@style/ButtomBarImgBtn"-->
+                <!--android:background="@drawable/bar_news"-->
+                <!--android:contentDescription="@string/app_name" />-->
+        <!--</RelativeLayout>-->
 
-            <TextView
-                android:id="@+id/text1"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1.0"
-                android:gravity="center"
-                android:text="@string/main_activity_page1_title"
-                android:textColor="#ffffff"
-                android:textSize="20.0dip" />
+        <!--<RelativeLayout style="@style/ButtomBar">-->
 
-            <TextView
-                android:id="@+id/text2"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1.0"
-                android:gravity="center"
-                android:text="@string/main_activity_page2_title"
-                android:textColor="#ffffff"
-                android:textSize="20.0dip" />
+            <!--<ImageButton-->
+                <!--android:id="@+id/buttom_two"-->
+                <!--style="@style/ButtomBarImgBtn"-->
+                <!--android:background="@drawable/bar_constact"-->
+                <!--android:contentDescription="@string/app_name" />-->
+        <!--</RelativeLayout>-->
 
-            <TextView
-                android:id="@+id/text3"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1.0"
-                android:gravity="center"
-                android:text="@string/main_activity_page3_title"
-                android:textColor="#ffffff"
-                android:textSize="20.0dip" />
-        </LinearLayout>
-    </RelativeLayout>
+        <!--<RelativeLayout style="@style/ButtomBar">-->
 
-</LinearLayout>
+            <!--<ImageButton-->
+                <!--android:id="@+id/buttom_three"-->
+                <!--style="@style/ButtomBarImgBtn"-->
+                <!--android:background="@drawable/bar_deynaimic"-->
+                <!--android:contentDescription="@string/app_name" />-->
+        <!--</RelativeLayout>-->
+
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_above="@id/buttom_bar_group"
+        android:background="@color/devide_line" />
+
+    <FrameLayout
+        android:id="@+id/fl_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/line" />
+
+</RelativeLayout>

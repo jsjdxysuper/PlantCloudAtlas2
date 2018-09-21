@@ -3,4 +3,6 @@
     <color name="window_bg">#ffeef1f3</color>
     <color name="qqblue">#ff54acea</color>
     <color name="transparent">#00000000</color>
+    <color name="devide_line">#CBCED2</color>
+    <color name="red">#FF0000</color>
 </resources>

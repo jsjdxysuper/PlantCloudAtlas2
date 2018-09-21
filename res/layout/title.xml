@@ -7,7 +7,7 @@
     <RelativeLayout
         android:id="@+id/title"
         android:layout_width="fill_parent"
-        android:layout_height="40dp"
+        android:layout_height="45dp"
         android:background="@drawable/title_bar"
         android:gravity="center_vertical" >
         <ImageView
@@ -29,17 +29,19 @@
             android:textSize="15sp" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btnSet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/button1"
+            android:layout_toLeftOf="@+id/btnFresh"
             android:background="@drawable/title_btn_right2"
             android:onClick="btn_setting"
-            android:textColor="#fff" />
+            android:textColor="#fff"
+            android:enabled="true"
+            android:visibility="visible"/>
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/btnFresh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

@@ -1,7 +1,10 @@
 package com.kedong.utils;
 
-import net.sf.json.JSONObject;
+//import net.sf.json.JSONObject;
 
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
@@ -12,7 +15,14 @@ public class WholenessCheck {
 	public static String decode(String jsonStr,String pwd){
 		if(pwd==null)
 			pwd=keyData;
-		JSONObject jo = JSONObject.fromObject(jsonStr);
+
+		JSONObject jo = null;
+		try {
+			jo = new JSONObject(jsonStr);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
 		String beforeMD5 = jsonStr.replaceAll("'", "");
 		beforeMD5 = beforeMD5.replaceAll("\"", "");
 		String afterMD5 =null;
@@ -22,7 +32,11 @@ public class WholenessCheck {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		jo.put("MD5Code", afterMD5);
+		try {
+			jo.put("MD5Code", afterMD5);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 		return jo.toString();
 	}
 

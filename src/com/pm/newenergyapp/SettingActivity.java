@@ -100,7 +100,7 @@ public class SettingActivity extends BaseActivity {
 		startActivity(intent);
 
 		SettingActivity.this.finish();
-		MainActivity.getInstance().finish();
+//		MainActivity.getInstance().finish();
 	}
 
 
