@@ -1,8 +1,13 @@
-package com.pm.newenergyapp;
+package com.kedong.newenergyapp.bussiness;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -10,12 +15,12 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import com.kedong.newenergyapp.R;
+import com.kedong.newenergyapp.service.CheckNewsIntentService;
 
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import ezy.boost.update.IUpdateParser;
 import ezy.boost.update.UpdateInfo;
 import ezy.boost.update.UpdateManager;
@@ -36,6 +41,10 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        Intent intentServ = new Intent(this, CheckNewsIntentService.class);
+//        startService(intentServ);
+
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_main);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title);
@@ -170,6 +179,12 @@ public class MainActivity extends Activity {
 //                        ft.show(fragList.get(btnIndex));
 //                    }
                     Fragment_Two fragment_two = (Fragment_Two)fm.findFragmentByTag(btnIndex+"");
+                    if(listUserPage.get(btnIndex).isFirstLoad()){
+                        ProgressWebView progressWebView = (ProgressWebView) fragList.get(btnIndex).getView().findViewById(R.id.webview);
+                        progressWebView.reload();
+                        listUserPage.get(btnIndex).setFirstLoad(false);
+                    }
+
                     ft.show(fragment_two);
                     ft.commitAllowingStateLoss();
                     fm.executePendingTransactions();

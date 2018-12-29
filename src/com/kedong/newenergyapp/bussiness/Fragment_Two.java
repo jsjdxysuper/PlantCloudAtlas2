@@ -1,4 +1,4 @@
-package com.pm.newenergyapp;
+package com.kedong.newenergyapp.bussiness;
 
 import android.app.Fragment;
 import android.graphics.Bitmap;
@@ -11,6 +11,8 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.kedong.newenergyapp.R;
 
 /**
  * Created by Doraemon on 2014/7/15.

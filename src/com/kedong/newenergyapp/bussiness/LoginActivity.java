@@ -1,4 +1,4 @@
-package com.pm.newenergyapp;
+package com.kedong.newenergyapp.bussiness;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -43,9 +43,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import com.kedong.app.BaseActivity;
 import com.kedong.newenergyapp.rsa.RSAUtils;
+import com.kedong.newenergyapp.service.CheckNewsIntentService;
 import com.kedong.utils.DESUtil;
 import com.kedong.utils.SessionUtil;
 import com.kedong.utils.WholenessCheck;
+import com.kedong.newenergyapp.R;
+
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +85,11 @@ public class LoginActivity extends BaseActivity {
     @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		Intent intentServ = new Intent(this, CheckNewsIntentService.class);
+		startService(intentServ);
+
+
         imageCheckRunnable=new Runnable() {
             @Override
             public void run() {
@@ -103,7 +111,7 @@ public class LoginActivity extends BaseActivity {
 		JZ_URL = getApplication().getString(R.string.page3_url);
 		hardwareId = Utility.getUnicId(this);
 		//获得实例对象
-		sp = this.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
+		sp = this.getSharedPreferences(getString(R.string.projectStore), Context.MODE_WORLD_READABLE);
 		mUser = (EditText)findViewById(R.id.login_user_edit);
 		checkCodeET = (EditText)findViewById(R.id.image_check_input);
 		mPassword = (EditText)findViewById(R.id.login_passwd_edit);
@@ -293,7 +301,7 @@ public class LoginActivity extends BaseActivity {
 			ChangepwActivity.setUserid(userid);
 
             handler.removeCallbacks(imageCheckRunnable);
-			startTimer();
+			//startTimer();//登录超时自动跳到登录界面
 			Intent intent = new Intent();
 			intent.setClass(LoginActivity.this,MainActivity.class);
 			startActivity(intent);
@@ -318,7 +326,7 @@ public class LoginActivity extends BaseActivity {
 	}
 	public void login_mainweixin(View v) {
 		String pageName[] = {"风电","光伏","日报"};
-		String pageU[] = {"https://www.lnsdxny.top/NEApp/windOutline","https://www.lnsdxny.top/NEApp/lightOutline","https://www.lnsdxny.top/NEApp/dayReportOutline"};
+		String pageU[] = {"https://www.lnsdxny.top/NEApp/windOutline/init","https://www.lnsdxny.top/NEApp/lightOutline/init","https://www.lnsdxny.top/NEApp/dayReportOutline/init"};
 		List<UserPage> listUserPage = new ArrayList<UserPage>();
 		for(int i=0;i<3;i++){
 			UserPage temp = new UserPage();
@@ -330,17 +338,17 @@ public class LoginActivity extends BaseActivity {
 			listUserPage.add(temp);
 		}
 		MainActivity.listUserPage = listUserPage;
-		login_state(1);
-//        if (isConnectInternet() == true) {
-//			if ("".equals(mUser.getText().toString()) || "".equals(mPassword.getText().toString())) {
-//				Dialog.showDialog("登录错误", "用户或者密码不能为空，\n请输入后再登录！", LoginActivity.this);
-//                webGetCheckImage(null);
-//			} else {
-//				checkLogin();
-//			}
-//		} else{
-//			Dialog.showDialog("系统提示", "没有可用网络连接，\n请检查网络状态！", LoginActivity.this);
-//		}
+		//login_state(1);
+        if (isConnectInternet() == true) {
+			if ("".equals(mUser.getText().toString()) || "".equals(mPassword.getText().toString())) {
+				Dialog.showDialog("登录错误", "用户或者密码不能为空，\n请输入后再登录！", LoginActivity.this);
+                webGetCheckImage(null);
+			} else {
+				checkLogin();
+			}
+		} else{
+			Dialog.showDialog("系统提示", "没有可用网络连接，\n请检查网络状态！", LoginActivity.this);
+		}
 	}
 
 	public boolean isConnectInternet() {
@@ -408,7 +416,7 @@ public class LoginActivity extends BaseActivity {
 //			Dialog.showDialog("登录错误", "验证码错误或为空，\n请输入后再登录！", LoginActivity.this);
 //		}
 //		else
-			//loginServletURL += "?userId=" + userid + "&pwd=" + password+"&hardwareId="+hardwareId;
+//			loginServletURL += "?userId=" + userid + "&pwd=" + password+"&hardwareId="+hardwareId;
 		// 设置HTTP POST请求参数必须用NameValuePair对象
 		progressDialog=ProgressDialog.show(LoginActivity.this, "登录", "验证中，请稍后……");
 		new Thread() {

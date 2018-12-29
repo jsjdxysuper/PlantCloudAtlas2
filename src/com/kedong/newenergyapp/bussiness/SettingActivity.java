@@ -1,6 +1,5 @@
-package com.pm.newenergyapp;
+package com.kedong.newenergyapp.bussiness;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,8 +11,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.RelativeLayout;
 import android.view.View.OnClickListener;
-
 import com.kedong.app.BaseActivity;
+import com.kedong.newenergyapp.R;
 
 public class SettingActivity extends BaseActivity {
 	private RelativeLayout rl_userinfo;

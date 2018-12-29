@@ -97,7 +97,8 @@
                 android:button="@drawable/checkbox_style_two"
                 android:text="自动登录"
                 android:textColor="#FFFFFF"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:visibility="invisible"/>
         </LinearLayout>
         <Button
             android:id="@+id/login_login_btn"

@@ -1,11 +1,11 @@
-package com.pm.newenergyapp;
+package com.kedong.newenergyapp.bussiness;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
 import com.kedong.app.BaseActivity;
+import com.kedong.newenergyapp.R;
 
 public class WelcomeActivity extends BaseActivity {
 
@@ -14,7 +14,7 @@ public class WelcomeActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) { 
 		super.onCreate(savedInstanceState); 
-		setContentView(R.layout.welcome); 
+		setContentView(R.layout.welcome);
 
 
 		new Handler().postDelayed(new Runnable(){ 

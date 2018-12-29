@@ -1,13 +1,11 @@
-package com.pm.newenergyapp;
+package com.kedong.newenergyapp.bussiness;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.AbstractHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.HTTP;
@@ -34,6 +32,7 @@ import com.kedong.newenergyapp.rsa.RSAUtils;
 import com.kedong.utils.DESUtil;
 import com.kedong.utils.SessionUtil;
 import com.kedong.utils.WholenessCheck;
+import com.kedong.newenergyapp.R;
 
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;

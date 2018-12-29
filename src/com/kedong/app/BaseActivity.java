@@ -6,8 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 
-import com.pm.newenergyapp.LoadingActivity;
-import com.pm.newenergyapp.LoginActivity;
+import com.kedong.newenergyapp.bussiness.LoginActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -41,7 +40,7 @@ public class BaseActivity extends Activity {
         public void run() {
             Log.e("wanghang", "check time");
             // 5s未操作
-            if (System.currentTimeMillis() - mLastActionTime > 1000*60*20) {
+            if (System.currentTimeMillis() - mLastActionTime > 1000*60) {
                 // 退出登录
 //                Intent intent = new Intent();
 //                intent.setClass(inAc,LoginActivity.class);

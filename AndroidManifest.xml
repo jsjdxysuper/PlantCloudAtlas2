@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.pm.newenergyapp"
+    package="com.kedong.newenergyapp"
     android:versionCode="1"
-    android:versionName="1.0">
+    android:versionName="1.0"
+    android:hardwareAccelerated="false">
 
     <uses-sdk
         android:minSdkVersion="16"
@@ -10,56 +11,55 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
-
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.GET_TASKS"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18"/>
-    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:name="com.kedong.app.MyApplication"
         android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/mytitle"><!--android:Theme.Light Theme.AppCompat-->
-        <meta-data android:name="android.max_aspect" android:value="2.1" />
+        android:theme="@style/mytitle"> <!-- android:Theme.Light Theme.AppCompat -->
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.pm.newenergyapp.fileprovider"
-            android:grantUriPermissions="true"
-            android:exported="false">
-            <!--元数据-->
+            android:name="ezy.boost.update.UpdateFileProvider"
+            android:authorities="${applicationId}.updatefileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/updatepath" />
+                android:resource="@xml/update_cache_path" />
         </provider>
 
         <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_main"
-            ></activity>
-        <!--android:theme="@style/Theme.AppCompat.Light.NoActionBar"-->
+            android:name=".bussiness.MainActivity"
+            android:label="@string/title_activity_main" />
+        <!-- android:theme="@style/Theme.AppCompat.Light.NoActionBar" -->
         <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:name=".bussiness.LoginActivity"
+            android:label="@string/title_activity_login" />
         <activity
-            android:name=".LoadingActivity"
-            android:label="@string/title_activity_loading"></activity>
+            android:name=".bussiness.LoadingActivity"
+            android:label="@string/title_activity_loading" />
         <activity
-            android:name=".WelcomeActivity"
+            android:name=".bussiness.WelcomeActivity"
             android:label="@string/title_activity_welcome"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
@@ -69,25 +69,29 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingActivity"
-            android:label="@string/title_activity_setting"></activity>
+            android:name=".bussiness.SettingActivity"
+            android:label="@string/title_activity_setting" />
         <activity
-            android:name=".UserinfoActivity"
-            android:label="@string/title_activity_userinfo"></activity>
+            android:name=".bussiness.UserinfoActivity"
+            android:label="@string/title_activity_userinfo" />
         <activity
-            android:name=".ChangepwActivity"
-            android:label="@string/title_activity_changepw"></activity>
+            android:name=".bussiness.ChangepwActivity"
+            android:label="@string/title_activity_changepw" />
         <activity
-            android:name=".AboutActivity"
-            android:label="@string/title_activity_about"></activity>
+            android:name=".bussiness.AboutActivity"
+            android:label="@string/title_activity_about" />
 
         <service
-            android:name=".NetworkStateService"
+            android:name=".bussiness.NetworkStateService"
             android:enabled="true" />
 
         <activity
-            android:name=".HelpActivity"
-            android:label="@string/title_activity_help"></activity>
+            android:name=".bussiness.HelpActivity"
+            android:label="@string/title_activity_help" />
+
+        <service
+            android:name=".service.CheckNewsIntentService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.pm.newenergyapp;
+package com.kedong.newenergyapp.bussiness;
 
 /**
  * Created by ding on 2018/9/14.
@@ -9,6 +9,7 @@ public class UserPage {
     private String  pagename;
     private String pageUrl;
     private int order_int;
+    private boolean isFirstLoad = true;
 
 
     public String getId() {
@@ -34,5 +35,13 @@ public class UserPage {
     }
     public void setOrder_int(int order_int) {
         this.order_int = order_int;
+    }
+
+    public boolean isFirstLoad() {
+        return isFirstLoad;
+    }
+
+    public void setFirstLoad(boolean firstLoad) {
+        isFirstLoad = firstLoad;
     }
 }

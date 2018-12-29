@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context="${packageName}.${activityClass}" >
 
-    <com.pm.newenergyapp.ProgressWebView
+    <com.kedong.newenergyapp.bussiness.ProgressWebView
         android:id="@+id/webView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

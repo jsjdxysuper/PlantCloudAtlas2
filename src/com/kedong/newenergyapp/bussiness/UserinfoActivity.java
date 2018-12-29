@@ -1,4 +1,4 @@
-package com.pm.newenergyapp;
+package com.kedong.newenergyapp.bussiness;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.view.Window;
 import android.widget.TextView;
+
+import com.kedong.newenergyapp.R;
 
 public class UserinfoActivity extends Activity {
 	static String userid = "";

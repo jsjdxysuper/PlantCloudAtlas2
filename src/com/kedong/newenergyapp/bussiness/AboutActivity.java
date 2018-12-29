@@ -1,8 +1,10 @@
-package com.pm.newenergyapp;
+package com.kedong.newenergyapp.bussiness;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Window;
+
+import com.kedong.newenergyapp.R;
 
 public class AboutActivity extends Activity {
 

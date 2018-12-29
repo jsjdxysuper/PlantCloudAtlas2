@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.pm.newenergyapp.LoginActivity;
-
 
 /**
  * Created by ding on 2018/6/28.
