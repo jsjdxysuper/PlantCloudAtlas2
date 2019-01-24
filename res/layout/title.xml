@@ -38,7 +38,7 @@
             android:onClick="btn_setting"
             android:textColor="#fff"
             android:enabled="true"
-            android:visibility="visible"/>
+            android:visibility="invisible"/>
 
         <Button
             android:id="@+id/btnFresh"

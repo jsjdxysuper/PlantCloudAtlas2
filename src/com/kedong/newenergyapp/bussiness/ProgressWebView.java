@@ -3,6 +3,7 @@ package com.kedong.newenergyapp.bussiness;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
@@ -21,10 +22,10 @@ public class ProgressWebView extends WebView {
 
         WebSettings webSettings = this.getSettings();
         //5.0以上开启混合模式加载
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        }
-        webSettings.setLoadWithOverviewMode(true);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+//        }
+//        webSettings.setLoadWithOverviewMode(true);
         webSettings.setUseWideViewPort(true);
         //允许js代码
         webSettings.setJavaScriptEnabled(true);
@@ -37,9 +38,12 @@ public class ProgressWebView extends WebView {
         webSettings.setTextZoom(100);
         //10M缓存，api 18后，系统自动管理。
         webSettings.setAppCacheMaxSize(10 * 1024 * 1024);
+        webSettings.setDatabaseEnabled(true);
+        String cacheDirPath =   context.getFilesDir().getAbsolutePath()+"/webcache";
+        webSettings.setAppCachePath(cacheDirPath);
+        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         //允许缓存，设置缓存位置
         webSettings.setAppCacheEnabled(true);
-        webSettings.setAppCachePath(context.getDir("appcache", 0).getPath());
         //允许this使用File协议
         webSettings.setAllowFileAccess(true);
         //不保存密码
@@ -76,4 +80,5 @@ public class ProgressWebView extends WebView {
         progressbar.setLayoutParams(lp);
         super.onScrollChanged(l, t, oldl, oldt);
     }
+
 }

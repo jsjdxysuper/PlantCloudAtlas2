@@ -1,18 +1,25 @@
 package com.kedong.newenergyapp.bussiness;
 
+import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
+import android.os.Build;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.SslErrorHandler;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.kedong.newenergyapp.R;
+
+import java.io.IOException;
 
 /**
  * Created by Doraemon on 2014/7/15.
@@ -73,19 +80,63 @@ public class Fragment_Two extends Fragment {
                 handler.proceed();
             }
 
-//            @Override
-//            public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-//                String url1 =getApplication().getString(R.string.page1_url);
-//                String url2 = getApplication().getString(R.string.page2_url);
-//                String url3 = getApplication().getString(R.string.page3_url);
-//                if (url.contains(url1)||url.contains(url2)||url.contains(url3)) {
-//                    return super.shouldInterceptRequest(view, url);//正常加载
-//                }else{
-//
-//                    flag = 1;
-//                    return super.shouldInterceptRequest(view, url);//正常加载
-//                }
-//            }
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+                WebResourceResponse response = null;
+                if (Build.VERSION.SDK_INT >= VERSION_CODES.HONEYCOMB){
+                    response = super.shouldInterceptRequest(view,url);
+                    if (url.contains("statics")){
+                        int index = url.indexOf("statics");
+                        String subStr = url.substring(index, url.length());
+                        subStr = subStr.replaceAll("statics/", "");
+                        if(subStr.endsWith("js")) {
+                            try {
+                                response = new WebResourceResponse("application/x-javascript", "UTF-8",
+                                        getResources().getAssets().open(subStr));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }else if(subStr.endsWith("css")){
+                            try {
+                                response = new WebResourceResponse("text/css", "UTF-8",
+                                       getResources().getAssets().open(subStr));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+//                return super.shouldInterceptRequest(view, url);
+                return  response;
+            }
+
+            @TargetApi(VERSION_CODES.LOLLIPOP)
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+                WebResourceResponse response = null;
+                response =  super.shouldInterceptRequest(view, request);
+                if (url.contains("statics")){
+                    int index = url.indexOf("statics");
+                    String subStr = url.substring(index, url.length());
+                    subStr = subStr.replaceAll("statics", "");
+                    if(subStr.endsWith("js")) {
+                        try {
+                            response = new WebResourceResponse("application/x-javascript", "UTF-8",
+                                    getResources().getAssets().open(subStr));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }else if(subStr.endsWith("css")){
+                        try {
+                            response = new WebResourceResponse("text/css", "UTF-8",
+                                    getResources().getAssets().open(subStr));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                return response;
+            }
         });
     }
     public ProgressWebView getWv() {

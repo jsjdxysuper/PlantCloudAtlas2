@@ -53,6 +53,10 @@ import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
+import ezy.boost.update.IUpdateParser;
+import ezy.boost.update.UpdateInfo;
+import ezy.boost.update.UpdateManager;
+
 public class LoginActivity extends BaseActivity {
 
 	private EditText mUser; // 帐号编辑框
@@ -82,6 +86,34 @@ public class LoginActivity extends BaseActivity {
     private Runnable imageCheckRunnable;
 	private List<UserPage>userPageList;
 	int notification_id=1;
+
+	public void checkUpdate(){
+		UpdateManager.create(this).setUrl( getApplication().getString(R.string.update_check_url)).setParser(new IUpdateParser() {
+			@Override
+			public UpdateInfo parse(String source) throws Exception {
+				JSONObject jo = new JSONObject(source);
+				UpdateInfo info = new UpdateInfo();// todo
+				info.md5 = jo.getString("md5");
+				info.size = jo.getInt("size");
+				info.updateContent = jo.getString("updatecontent");
+				info.url = jo.getString("url");
+				info.versionCode = jo.getInt("versioncode");
+				info.versionName = jo.getString("versionname");
+
+				if(Utility.getVersionCode(getApplicationContext())<info.versionCode){
+					info.hasUpdate = true;
+					info.isForce = jo.getInt("isforce")==1?true:false;
+					info.isSilent = jo.getInt("issilent")==1?true:false;
+					info.isAutoInstall = jo.getInt("isautoinstall")==1?true:false;
+					info.isIgnorable = jo.getInt("isignorable")==1?true:false;
+					info.maxTimes = jo.getInt("maxtimes");
+				}
+
+				return info;
+			}
+		}).setWifiOnly(false).check();
+	}
+
     @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -198,6 +230,7 @@ public class LoginActivity extends BaseActivity {
 		});
 		//获取RSA加密的公钥
 		getRSAPublic();
+        checkUpdate();
 	}
 
 

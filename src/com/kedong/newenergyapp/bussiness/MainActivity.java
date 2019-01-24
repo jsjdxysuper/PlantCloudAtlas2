@@ -61,30 +61,30 @@ public class MainActivity extends Activity {
         btnSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UpdateManager.create(view.getContext()).setUrl( getApplication().getString(R.string.update_check_url)).setParser(new IUpdateParser() {
-                    @Override
-                    public UpdateInfo parse(String source) throws Exception {
-                        JSONObject jo = new JSONObject(source);
-                        UpdateInfo info = new UpdateInfo();// todo
-                        info.md5 = jo.getString("md5");
-                        info.size = jo.getInt("size");
-                        info.updateContent = jo.getString("updatecontent");
-                        info.url = jo.getString("url");
-                        info.versionCode = jo.getInt("versioncode");
-                        info.versionName = jo.getString("versionname");
-
-                        if(Utility.getVersionCode(view.getContext())<info.versionCode){
-                            info.hasUpdate = true;
-                            info.isForce = jo.getInt("isforce")==1?true:false;
-                            info.isSilent = jo.getInt("issilent")==1?true:false;
-                            info.isAutoInstall = jo.getInt("isautoinstall")==1?true:false;
-                            info.isIgnorable = jo.getInt("isignorable")==1?true:false;
-                            info.maxTimes = jo.getInt("maxtimes");
-                        }
-
-                        return info;
-                    }
-                }).setWifiOnly(false).check();
+//                UpdateManager.create(view.getContext()).setUrl( getApplication().getString(R.string.update_check_url)).setParser(new IUpdateParser() {
+//                    @Override
+//                    public UpdateInfo parse(String source) throws Exception {
+//                        JSONObject jo = new JSONObject(source);
+//                        UpdateInfo info = new UpdateInfo();// todo
+//                        info.md5 = jo.getString("md5");
+//                        info.size = jo.getInt("size");
+//                        info.updateContent = jo.getString("updatecontent");
+//                        info.url = jo.getString("url");
+//                        info.versionCode = jo.getInt("versioncode");
+//                        info.versionName = jo.getString("versionname");
+//
+//                        if(Utility.getVersionCode(view.getContext())<info.versionCode){
+//                            info.hasUpdate = true;
+//                            info.isForce = jo.getInt("isforce")==1?true:false;
+//                            info.isSilent = jo.getInt("issilent")==1?true:false;
+//                            info.isAutoInstall = jo.getInt("isautoinstall")==1?true:false;
+//                            info.isIgnorable = jo.getInt("isignorable")==1?true:false;
+//                            info.maxTimes = jo.getInt("maxtimes");
+//                        }
+//
+//                        return info;
+//                    }
+//                }).setWifiOnly(false).check();
             }
         });
         DisplayMetrics dm = getResources().getDisplayMetrics();
