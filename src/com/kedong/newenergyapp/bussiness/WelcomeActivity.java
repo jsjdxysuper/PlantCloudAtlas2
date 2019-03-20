@@ -6,6 +6,7 @@ import android.os.Handler;
 
 import com.kedong.app.BaseActivity;
 import com.kedong.newenergyapp.R;
+import com.kedong.newenergyapp.service.CheckNewsIntentService;
 
 public class WelcomeActivity extends BaseActivity {
 
@@ -16,6 +17,8 @@ public class WelcomeActivity extends BaseActivity {
 		super.onCreate(savedInstanceState); 
 		setContentView(R.layout.welcome);
 
+		Intent intentServ = new Intent(this, CheckNewsIntentService.class);
+		startService(intentServ);
 
 		new Handler().postDelayed(new Runnable(){ 
 

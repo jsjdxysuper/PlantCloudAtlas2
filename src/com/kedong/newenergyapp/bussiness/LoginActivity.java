@@ -118,8 +118,7 @@ public class LoginActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		Intent intentServ = new Intent(this, CheckNewsIntentService.class);
-		startService(intentServ);
+
 
 
         imageCheckRunnable=new Runnable() {

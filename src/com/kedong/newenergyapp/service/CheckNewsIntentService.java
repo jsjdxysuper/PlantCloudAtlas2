@@ -1,5 +1,6 @@
 package com.kedong.newenergyapp.service;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.IntentService;
 import android.app.Notification;
@@ -27,6 +28,16 @@ import com.kedong.newenergyapp.R;
 import com.kedong.newenergyapp.bussiness.LoginActivity;
 import com.kedong.newenergyapp.bussiness.MainActivity;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.DisconnectedBufferOptions;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,25 +57,35 @@ import java.net.URL;
  * TODO: Customize class - update intent actions and extra parameters.
  */
 public class CheckNewsIntentService extends Service {
+    MqttMessage message;
+    private MqttProxy mqqtProxy;
     private SharedPreferences sharedPrefer;
     private String dateTime;
     private String title;
     private String content;
-    Handler handler = new Handler();
+
+
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            getNewsInfo();
-            handler.postDelayed(this, 1000*60*2);
+//            getNewsInfo();
+            Toast.makeText(CheckNewsIntentService.this,("\"Message:-------++++++++++++++++++++++\""), Toast.LENGTH_SHORT).show();
+           // System.out.println("Message:--------------------------------==========================++++++++++++++++++++++");
+           //handler.postDelayed(this, 1000*5);
         }
     };
     Handler showMsgHandler = new Handler(){
         public void handleMessage(Message msg){
             if(msg.what == 0x111) {
                 notific(title,content);
+            }else if(msg.what==0x201){
+                notific("通知",msg.obj.toString());
             }
         }
     };
+
+
+
 
     /**
      * 播放系统默认提示音
@@ -160,9 +181,16 @@ public class CheckNewsIntentService extends Service {
         builder.setWhen(System.currentTimeMillis());
         builder.setContentTitle(title);
         builder.setContentText(content);
-        Intent intent = new Intent(CheckNewsIntentService.this, Activity.class);
-        PendingIntent ma = PendingIntent.getActivity(CheckNewsIntentService.this,0,intent,0);
-        builder.setContentIntent(ma);//设置点击过后跳转的activity
+
+        Intent broadcastIntent = new Intent(getApplicationContext(), MyReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.
+                getBroadcast(getApplicationContext(), 0, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+//        Intent intent = new Intent(CheckNewsIntentService.this, Activity.class);
+//
+//        intent.setPackage("com.kedong.newenergyapp");
+//        PendingIntent ma = PendingIntent.getActivity(CheckNewsIntentService.this,0,intent,0);
+        builder.setContentIntent(pendingIntent);//设置点击过后跳转的activity
         builder.setDefaults(Notification.DEFAULT_SOUND);//设置声音
         builder.setDefaults(Notification.DEFAULT_LIGHTS);//设置指示灯
         builder.setDefaults(Notification.DEFAULT_VIBRATE);//设置震动
@@ -182,18 +210,28 @@ public class CheckNewsIntentService extends Service {
         }
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
-        int ret = super.onStartCommand(intent,flags,startId);
-        handler.postDelayed(runnable, 1000*5);
+        flags =  Service.START_STICKY;
+//        super.onStartCommand(intent,flags,startId);
+      //  handler.postDelayed(runnable, 1000*5);
+        mqqtProxy = new MqttProxy(getApplicationContext(),showMsgHandler);
+        mqqtProxy.setMqtt();
 
         Log.w("ssss","===========================================onStartCommand");
-        return ret;
+        return Service.START_STICKY;
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public void onDestroy() {
+        Toast.makeText(this,("service要销毁了\n"), Toast.LENGTH_LONG).show();
+        super.onDestroy();
     }
 }
