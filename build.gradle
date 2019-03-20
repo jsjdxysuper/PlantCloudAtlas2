@@ -45,8 +45,8 @@ android {
     compileSdkVersion 28
     buildToolsVersion '28.0.1'
     defaultConfig {
-        versionCode 203
-        versionName "V2.0.3"
+        versionCode 204
+        versionName "V2.0.4"
         multiDexEnabled true
     }
     compileOptions {

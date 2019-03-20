@@ -65,15 +65,6 @@ public class CheckNewsIntentService extends Service {
     private String content;
 
 
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-//            getNewsInfo();
-            Toast.makeText(CheckNewsIntentService.this,("\"Message:-------++++++++++++++++++++++\""), Toast.LENGTH_SHORT).show();
-           // System.out.println("Message:--------------------------------==========================++++++++++++++++++++++");
-           //handler.postDelayed(this, 1000*5);
-        }
-    };
     Handler showMsgHandler = new Handler(){
         public void handleMessage(Message msg){
             if(msg.what == 0x111) {
@@ -186,10 +177,6 @@ public class CheckNewsIntentService extends Service {
         PendingIntent pendingIntent = PendingIntent.
                 getBroadcast(getApplicationContext(), 0, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-//        Intent intent = new Intent(CheckNewsIntentService.this, Activity.class);
-//
-//        intent.setPackage("com.kedong.newenergyapp");
-//        PendingIntent ma = PendingIntent.getActivity(CheckNewsIntentService.this,0,intent,0);
         builder.setContentIntent(pendingIntent);//设置点击过后跳转的activity
         builder.setDefaults(Notification.DEFAULT_SOUND);//设置声音
         builder.setDefaults(Notification.DEFAULT_LIGHTS);//设置指示灯

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kedong.newenergyapp"
-    android:versionCode="203"
-    android:versionName="V2.0.3"
+    android:versionCode="204"
+    android:versionName="V2.0.4"
     android:hardwareAccelerated="false">
 
     <uses-sdk
@@ -99,11 +99,10 @@
             />
 
         <receiver android:name="com.kedong.newenergyapp.service.MyReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.USER_PRESENT"/>
-                <!--<action android:name=com.example.demo.destroy"/>// 这个是自定义的action-->
-            </intent-filter>
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.BOOT_COMPLETED"/>-->
+                <!--<action android:name="android.intent.action.USER_PRESENT"/>-->
+            <!--</intent-filter>-->
         </receiver>
     </application>
 
