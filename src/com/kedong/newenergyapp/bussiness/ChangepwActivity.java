@@ -68,7 +68,7 @@ public class ChangepwActivity extends Activity {
 					webRetDeal(loginState);
 				}else if(msg.what == 0x130){//login
 					progressDialog.dismiss();
-					Toast.makeText(ChangepwActivity.this,("通讯数据可能被篡改，请重新登录\n"), Toast.LENGTH_SHORT).show();
+					//Toast.makeText(ChangepwActivity.this,("通讯数据可能被篡改，请重新登录\n"), Toast.LENGTH_SHORT).show();
 				}
 			}
 		};

@@ -20,7 +20,7 @@ public class MyApplication extends Application {
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
         if (level == TRIM_MEMORY_UI_HIDDEN) {
-            Toast.makeText(getApplicationContext(),("程序切换到后台，如不是您操作，可能被劫持\n"), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),("程序切换到后台，如不是您操作，可能被劫持\n"), Toast.LENGTH_SHORT).show();
         }
     }
 

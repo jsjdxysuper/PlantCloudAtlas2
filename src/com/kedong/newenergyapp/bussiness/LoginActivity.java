@@ -180,7 +180,7 @@ public class LoginActivity extends BaseActivity {
 					imageCheckControl.setImageBitmap(bitmap);
 				}else if(msg.what == 0x130){//login
 					progressDialog.dismiss();
-					Toast.makeText(LoginActivity.this,("通讯数据可能被篡改，请重新登录\n"), Toast.LENGTH_SHORT).show();
+					//Toast.makeText(LoginActivity.this,("通讯数据可能被篡改，请重新登录\n"), Toast.LENGTH_SHORT).show();
 				}
 
 			}
@@ -339,7 +339,7 @@ public class LoginActivity extends BaseActivity {
 			startActivity(intent);
 			this.finish();
 		} else if (loginState == 2) {
-			Dialog.showDialog("登录失败", "用户或者密码不正确或者设备未注册，\n请检查后重新输入！", LoginActivity.this);
+			Dialog.showDialog("登录失败", "用户或者密码不正确或者设备未注册，\n请检查后重新输入，或联系管理员！", LoginActivity.this);
             webGetCheckImage(null);
 		} else if (loginState == 3) {
 			Dialog.showDialog("系统提示", "数据连接失败，\n请检查网络状态！", LoginActivity.this);

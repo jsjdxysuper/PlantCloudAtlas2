@@ -45,24 +45,24 @@ public class MqttProxy {
             public void connectComplete(boolean reconnect, String serverURI) {
 
                 if (reconnect) {
-                    Toast.makeText(context,("MQTT Reconnected to : " + serverURI), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context,("MQTT Reconnected to : " + serverURI), Toast.LENGTH_LONG).show();
                     // Because Clean Session is true, we need to re-subscribe
                     subscribeToTopic();
                 } else {
-                    Toast.makeText(context,("MQTT Connected to: " + serverURI), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context,("MQTT Connected to: " + serverURI), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void connectionLost(Throwable cause) {
-                Toast.makeText(context,("The MQTT Connection was lost."), Toast.LENGTH_LONG).show();
+                //Toast.makeText(context,("The MQTT Connection was lost."), Toast.LENGTH_LONG).show();
                 System.err.println("The Connection was lost.");
                 cause.printStackTrace();
             }
 
             @Override
             public void messageArrived(String topic, MqttMessage message) throws Exception {
-                Toast.makeText(context,("MQTT Incoming message: " + new String(message.getPayload())), Toast.LENGTH_LONG).show();
+                //Toast.makeText(context,("MQTT Incoming message: " + new String(message.getPayload())), Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -91,7 +91,7 @@ public class MqttProxy {
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Toast.makeText(context,("MQTT Failed to connect to: " + serverUri), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context,("MQTT Failed to connect to: " + serverUri), Toast.LENGTH_LONG).show();
                     exception.printStackTrace();
                     Log.e("mqtt",exception.getMessage());
                 }
@@ -110,12 +110,12 @@ public class MqttProxy {
             mqttAndroidClient.subscribe(subscriptionTopic, 0, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    Toast.makeText(context,("MQTT Subscribed!"), Toast.LENGTH_LONG).show();
+                   // Toast.makeText(context,("MQTT Subscribed!"), Toast.LENGTH_LONG).show();
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Toast.makeText(context,("MQTT Failed to subscribe!"), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context,("MQTT Failed to subscribe!"), Toast.LENGTH_LONG).show();
 
                 }
             });

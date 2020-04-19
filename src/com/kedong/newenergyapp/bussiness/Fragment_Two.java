@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -18,6 +20,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.kedong.newenergyapp.R;
+import com.kedong.utils.SessionUtil;
 
 import java.io.IOException;
 
@@ -38,6 +41,11 @@ public class Fragment_Two extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        CookieSyncManager.createInstance(getActivity().getApplicationContext());
+        CookieManager cookieManager = CookieManager.getInstance();
+        String cookieString = SessionUtil.cookieStore.getCookies().get(0).getName() + "=" + SessionUtil.cookieStore.getCookies().get(0).getValue() + "; domain=" + SessionUtil.cookieStore.getCookies().get(0).getDomain();
+        cookieManager.setCookie(SessionUtil.cookieStore.getCookies().get(0).getDomain(), cookieString);
+        CookieSyncManager.getInstance().sync();
         wv.loadUrl(url);
     }
     public void initWebView(View contentView){
